@@ -1,5 +1,68 @@
 @extends('layouts.base')
 
 @section('content')
-<h1>SMS Page its working</h1>
+{!! Form::open(['url'=>'sms', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
+{!! Form::token() !!}
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="section-title text-center">
+				<h3>Select a list of recipients, add content and send it</h3>
+				<span class="text-uppercase">it's easy</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row justify-content-center">
+		<div class="col-lg-10">
+			<span id="recipient-error"></span>
+
+			@if (session()->has('data'))
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					{{session()->get('data')}}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			@endif
+
+			@if (count($errors) > 0)
+			<div class="alert alert-danger">
+				<ul>
+				@foreach($errors->all() as $error)
+					<li>{{$error}}</li>
+				@endforeach
+				</ul>
+			</div>
+			@endif
+
+			<ul class="nav nav-tabs" role="tablist" id="steps-tab">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">1. Recipients</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Phase 2</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Phase 3</a>
+				</li>
+			</ul><!-- Tab panes -->
+
+			<div class="tab-content">
+				<div class="tab-pane active pt-4" id="tabs-1" role="tabpanel">
+					<div class="form-group">
+						<label for="recipients">Select a list of recipients (CSV):</label>
+						<input type="file" class="form-control-file" name="recipients" id="recipients" required>
+					</div>
+				</div>
+				<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">
+					<p>Phase 2</p>
+				</div>
+				<div class="tab-pane pt-4" id="tabs-3" role="tabpanel">
+					<p>Phase 3</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{!! Form::close() !!}
 @endsection
