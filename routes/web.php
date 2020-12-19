@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\SMSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,6 @@ Route::get('/', [MailController::class, 'index']);
 
 
 Route::resource('/email', MailController::class);
+
+
+Route::resource('/sms', SMSController::class);
