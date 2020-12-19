@@ -40,7 +40,7 @@
 							</div>
 							<div class="main-menubar d-flex align-items-center">
 								<nav class="hide">
-									<a href="index.html">Mail</a>
+									<a href="{{ url('/') }}">Mail</a>
 									<a href="generic.html">SMS</a>
 								</nav>
 								<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
