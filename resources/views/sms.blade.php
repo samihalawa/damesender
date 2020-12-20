@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-{!! Form::open(['url'=>'sms', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
+{!! Form::open(['url'=>'email', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
 {!! Form::token() !!}
 	<div class="row justify-content-center">
 		<div class="col-lg-8">
@@ -40,10 +40,7 @@
 					<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">1. Recipients</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Phase 2</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Phase 3</a>
+					<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">2. Write your message</a>
 				</li>
 			</ul><!-- Tab panes -->
 
@@ -55,11 +52,14 @@
 					</div>
 				</div>
 				<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">
-					<p>Phase 2</p>
-				</div>
-				<div class="tab-pane pt-4" id="tabs-3" role="tabpanel">
-					<p>Phase 3</p>
-				</div>
+					<div class="form-group mt-4 container-plain">
+						<label for="content">Content:</label>
+						<textarea class="form-control" name="content" id="content" rows="10"></textarea>
+					</div>
+					<div class="d-flex justify-content-center">
+						<button id="send-mail" class="btn btn-primary">Send</button>
+					</div>
+					</div>
 			</div>
 
 		</div>

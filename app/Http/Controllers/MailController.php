@@ -28,28 +28,29 @@ class MailController extends Controller
 
     public function store(Request $request) {
         $filePath = $request->file('recipients')->getRealPath();
-        $file = fopen($filePath, 'r');
-        if ($file) {
-            $fileContent = fgets($file);
-            $mails = explode(';', $fileContent);
-            
+
+        $contacts = array_map('str_getcsv', file($filePath));
+
+        if ($contacts) {            
             $data['body'] = ($request->type == 0? $request->content : $request->plain);
             $data['subject'] = $request->subject;
             $data['email'] = $request->email;
             $data['name'] = $request->name;
             
-            foreach ($mails as $m ){
-                $data['recipient'] = $m;
-                Mail::send(
-                    [],
-                    [],
-                    function ($message) use ($data) {
-                        $message->to($data['recipient'])
-                        ->subject($data['subject'])
-                        ->from($data['email'], $data['name'])
-                        ->setBody($data['body'], 'text/html');
-                    }
-                );
+            foreach ($contacts as $index => $contact) {
+                if ($index > 0) {
+                    $data['recipient'] = $contact[4];
+                    Mail::send(
+                        [],
+                        [],
+                        function ($message) use ($data) {
+                            $message->to($data['recipient'])
+                            ->subject($data['subject'])
+                            ->from($data['email'], $data['name'])
+                            ->setBody($data['body'], 'text/html');
+                        }
+                    );
+                }
             }
 
             if(count(Mail::failures()) > 0) {

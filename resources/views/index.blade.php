@@ -62,14 +62,14 @@
 						<div class="form-group row">
 							<label for="name" class="col-sm-4 col-form-label">From (name):</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (name)..." name="name" id="name">
+								<input class="form-control" type="text" placeholder="From (name)..." name="name" id="name" required>
 							</div>
 						</div>
 						
 						<div class="form-group row">
 							<label for="email" class="col-sm-4 col-form-label">From (email):</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (email)..." name="email" id="email">
+								<input class="form-control" type="text" placeholder="From (email)..." name="email" id="email" required>
 							</div>
 						</div>
 
