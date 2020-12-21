@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-{!! Form::open(['url'=>'email', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
+{!! Form::open(['url'=>'sms', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
 {!! Form::token() !!}
 	<div class="row justify-content-center">
 		<div class="col-lg-8">
@@ -52,7 +52,7 @@
 					</div>
 				</div>
 				<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">
-					<div class="form-group mt-4 container-plain">
+					<div class="form-group mt-4 container-body">
 						<label for="content">Content:</label>
 						<textarea class="form-control" name="content" id="content" rows="10"></textarea>
 					</div>
