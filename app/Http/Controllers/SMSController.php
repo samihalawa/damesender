@@ -11,23 +11,35 @@ class SMSController extends Controller
         return view('sms');
     }
 
-    public function store() {
-        // echo 'Enviando mensaje...';
-        // exit;
-        // Your Account SID and Auth Token from twilio.com/console
-        $sid = 'AC6870684b47eaa926dd554f9304a1ff76';
-        $token = '75ce39c7cf427db95f484b97fd7e72ba';
+    public function store(Request $request) {
+        $filePath = $request->file('recipients')->getRealPath();
+
+        $numbers = array_map('str_getcsv', file($filePath));
+        /* echo json_encode($numbers);
+         echo $request->content;
+         exit;*/
+       
+        $sid = 'AC5ac49d7a04baa34212dc4f524e4aa72a';
+        $token = '8725345a1c0befb5a0153df8184cbe4a';
         $client = new Client($sid, $token);
 
-        // Use the client to do fun stuff like send text messages!
-        $response = $client->messages->create(
-            // the number you'd like to send the message to
-            '+573165263438',
-            [
-                'from' => '+12517664989',
-                'body' => 'TONCES MAMAGUEVO'
-            ]
-        );
+       foreach($numbers as $index => $number){
+           if($index > 0){
+              // var_dump($number[5]);
+              // echo "<br>";
+               $data['recipient'] = $number[5];
+
+               $response = $client->messages->create(
+           
+                $data['recipient'], //Destino
+                [
+                    'from' => '+16593480483',
+                    'body' => $request->content,
+                ]
+            );
+           }
+       }
+        
         
         echo $response;
     }

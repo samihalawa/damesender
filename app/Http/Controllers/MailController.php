@@ -30,7 +30,7 @@ class MailController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
 
         $contacts = array_map('str_getcsv', file($filePath));
-
+        
         if ($contacts) {            
             $data['body'] = ($request->type == 0? $request->content : $request->plain);
             $data['subject'] = $request->subject;
@@ -52,6 +52,15 @@ class MailController extends Controller
                     );
                 }
             }
+            $varir  = json_encode($contacts);
+          //  echo $varir;
+          foreach($contacts as $index => $contact){
+            var_dump($contact[5]);
+            echo "<br>";
+          }
+            //var_dump($contacts);
+           // exit;
+           
 
             if(count(Mail::failures()) > 0) {
                 return redirect::back()->withErrors("Error sending mail.");
