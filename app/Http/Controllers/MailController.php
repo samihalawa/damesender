@@ -53,13 +53,10 @@ class MailController extends Controller
                 }
             }
             $varir  = json_encode($contacts);
-          //  echo $varir;
           foreach($contacts as $index => $contact){
             var_dump($contact[5]);
             echo "<br>";
           }
-            //var_dump($contacts);
-           // exit;
            
 
             if(count(Mail::failures()) > 0) {

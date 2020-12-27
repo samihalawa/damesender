@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;;
 use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Redirect;
 
 class SMSController extends Controller
 {
@@ -20,13 +21,12 @@ class SMSController extends Controller
          exit;*/
        
         $sid = 'AC5ac49d7a04baa34212dc4f524e4aa72a';
-        $token = '8725345a1c0befb5a0153df8184cbe4a';
+        $token = '85dd63baff15a3ed5394efb57c357cb6';
         $client = new Client($sid, $token);
 
        foreach($numbers as $index => $number){
            if($index > 0){
-              // var_dump($number[5]);
-              // echo "<br>";
+          
                $data['recipient'] = $number[5];
 
                $response = $client->messages->create(
@@ -39,8 +39,14 @@ class SMSController extends Controller
             );
            }
        }
+       if(!$response){
+        return redirect::back()->withErrors("Error sending SMS.");
+       }else{
+        $data = 'SMS sent successfully!';
+        return Redirect::to('/')->with('data', $data);
+       }
         
         
-        echo $response;
+      
     }
 }
