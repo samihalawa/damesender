@@ -14,7 +14,7 @@ use App\Http\Controllers\SMSController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/send', [MailController::class, 'sendTest']);
 Route::get('/', [MailController::class, 'index']);
 
 
@@ -22,3 +22,4 @@ Route::resource('/email', MailController::class);
 
 
 Route::resource('/sms', SMSController::class);
+

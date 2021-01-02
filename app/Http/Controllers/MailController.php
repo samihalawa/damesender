@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Redirect;
 
 class MailController extends Controller
 {
+
+    public function sendTest(){
+
+        $user=[];
+        //return "test";
+        Mail::send('emails.test', ['user' => $user], function ($m) use ($user) {
+            $m->from('atencion@megacursos.com', 'Dame Sender');
+
+            $m->to("houltman_gonzalez@hotmail.com", "Sami")->subject('test damesender ses!');
+        });
+
+    }
     public function index() {
         $files = array_diff(scandir('../public/templates/img'), ['..', '.']);
 
