@@ -6,19 +6,29 @@ use App\Mail\CustomMailable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use App\Mail\OrderPromocion;
 
 class MailController extends Controller
 {
 
     public function sendTest(){
 
-        $user=[];
+        $to="houltman@gmail.com";
+        $body="email con clases";
+        $subject="test send";
+        Mail::to($to)
+       // ->cc($moreUsers)
+       // ->bcc($evenMoreUsers)
+        ->send(new OrderPromocion($subject,$body));
+
+        /*
         //return "test";
         Mail::send('emails.enero', ['user' => $user], function ($m) use ($user) {
             $m->from('atencion@megacursos.com', 'Megacursos');
 
             $m->to("houltman_gonzalez@hotmail.com", "Sami")->subject('Este año Black Friday y Navidad los presentamos juntos la primera semana del año');
         });
+        */
 
     }
     public function index() {
