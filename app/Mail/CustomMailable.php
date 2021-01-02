@@ -12,16 +12,18 @@ class CustomMailable extends Mailable
     use Queueable, SerializesModels;
     public $subject;
     public $body;
+    public $from;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($subject, $body)
+    public function __construct($subject, $body,$from)
     {
         $this->subject = $subject;
         $this->body = $body;
+        $this->from = $from;
     }
 
     /**

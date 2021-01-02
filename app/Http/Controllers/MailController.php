@@ -7,28 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Mail\OrderPromocion;
+use App\Jobs\ProcessEmail;
 
 class MailController extends Controller
 {
 
     public function sendTest(){
 
-        $to="houltman@gmail.com";
-        $body="email con clases";
-        $subject="test send";
-        Mail::to($to)
-       // ->cc($moreUsers)
-       // ->bcc($evenMoreUsers)
-        ->send(new OrderPromocion($subject,$body));
+        $email="houltman@gmail.com";
+        $user="Gabriel Houltman";
+        $subject="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
+        $body ="Feliz año";
+        $from="atencion@megacursos.com";
+        $name="Megacursos";
 
-        /*
-        //return "test";
-        Mail::send('emails.enero', ['user' => $user], function ($m) use ($user) {
-            $m->from('atencion@megacursos.com', 'Megacursos');
+        //envio de email por colas
+        ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user);
 
-            $m->to("houltman_gonzalez@hotmail.com", "Sami")->subject('Este año Black Friday y Navidad los presentamos juntos la primera semana del año');
-        });
-        */
 
     }
     public function index() {
