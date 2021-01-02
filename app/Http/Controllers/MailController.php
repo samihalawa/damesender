@@ -14,10 +14,10 @@ class MailController extends Controller
 
         $user=[];
         //return "test";
-        Mail::send('emails.test', ['user' => $user], function ($m) use ($user) {
-            $m->from('atencion@megacursos.com', 'Dame Sender');
+        Mail::send('emails.enero', ['user' => $user], function ($m) use ($user) {
+            $m->from('atencion@megacursos.com', 'Megacursos');
 
-            $m->to("houltman_gonzalez@hotmail.com", "Sami")->subject('test damesender ses!');
+            $m->to("houltman_gonzalez@hotmail.com", "Sami")->subject('Este año Black Friday y Navidad los presentamos juntos la primera semana del año');
         });
 
     }
