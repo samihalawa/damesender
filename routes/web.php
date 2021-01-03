@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CountSMSAndEmailsController;
+use App\Http\Controllers\HistorialPagosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SMSController;
@@ -17,9 +19,8 @@ use App\Http\Controllers\SMSController;
 Route::get('/send', [MailController::class, 'sendTest']);
 Route::get('/', [MailController::class, 'index']);
 
-
+Route::resource('/historial', HistorialPagosController::class);
+Route::resource('/count', CountSMSAndEmailsController::class );
 Route::resource('/email', MailController::class);
-
-
 Route::resource('/sms', SMSController::class);
 

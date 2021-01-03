@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.dashboard')
 
 @section('content')
 {!! Form::open(['url'=>'sms', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}

@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.dashboard')
 
 @section('content')
 <div class="container">
@@ -135,10 +135,10 @@
 							<label for="plain">Content:</label>
 							<textarea class="form-control" name="plain" id="plain" rows="10"></textarea>
 						</div>
-						<div class="form-group mt-4 hidden" id="container-editor">
+						<!--  <div class="form-group mt-4 hidden" id="container-editor">
 							<label for="content">Content:</label>
 							<textarea name="content" id="editor"></textarea>
-						</div>
+						</div> -->
 						<div class="d-flex justify-content-center">
 							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>
 							<button id="send-mail" class="btn btn-primary">Send</button>
