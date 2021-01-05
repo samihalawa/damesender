@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypeEmailTable extends Migration
+class AddForeignToPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTypeEmailTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_email', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('payments', function (Blueprint $table) {
+            $table->unsignedBigInteger('users_id')->after('methods_of_payments_id');
+            $table->foreign('users_id')->references('id')->on('users');
         });
     }
 
@@ -26,6 +26,8 @@ class CreateTypeEmailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_email');
+        Schema::table('payments', function (Blueprint $table) {
+            //
+        });
     }
 }

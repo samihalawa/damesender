@@ -10,7 +10,7 @@ class CountSMSAndEmailsController extends Controller
         $contadorSMS = 8;
         $contadorEmails = 25;
         return view(
-            "dashboard.sms_emails",
+            "sms_emails",
             [
                 'contadorSMS' => $contadorSMS ,
                 'contadorEmail' => $contadorEmails

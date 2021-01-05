@@ -5,6 +5,7 @@ use App\Http\Controllers\HistorialPagosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SMSController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,5 @@ Route::resource('/historial', HistorialPagosController::class);
 Route::resource('/count', CountSMSAndEmailsController::class );
 Route::resource('/email', MailController::class);
 Route::resource('/sms', SMSController::class);
+Route::resource('/users', UserController::class);
 

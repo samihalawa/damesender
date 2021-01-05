@@ -13,7 +13,11 @@
     <link href="{{ asset('dashboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
 	<link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
-	<link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="{{ asset('dashboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -118,22 +122,22 @@
             <div class="deznav-scroll">
 				<ul class="metismenu" id="menu">                 
                    <li class="{{ Request::is('/email') ? 'mm-active' : '' }}"><a href="{{ url('/email') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-settings-2"></i>
+							<i class="flaticon-381-promotion"></i>
 							<span class="nav-text">Send Email</span>
 						</a>
                     </li>
                     <li class="{{ Request::is('/sms') ? 'mm-active' : '' }}"><a href="{{ url('/sms') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-settings-2"></i>
+							<i class="flaticon-381-smartphone"></i>
 							<span class="nav-text">Send SMS</span>
 						</a>
                     </li>
                     <li class="{{ Request::is('/historial') ? 'mm-active' : '' }}"><a href="{{ url('/historial') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-settings-2"></i>
+							<i class="flaticon-381-calendar-5"></i>
 							<span class="nav-text">Payment History</span>
 						</a>
                     </li>
                     <li class="{{ Request::is('/count') ? 'mm-active' : '' }}"><a href="{{ url('/count') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-user-2"></i>
+							<i class="flaticon-381-gift"></i>
 							<span class="nav-text">Free SMS & Emails</span>
 						</a>
 					</li>  
@@ -162,7 +166,15 @@
 	<script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
     <script src="{{ asset('dashboard/js/custom.min.js') }}"></script>
 	<script src="{{ asset('dashboard/js/deznav-init.js') }}"></script>
-	<script src="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
+	<script src="{{ asset('dashboard/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/custom.min.js') }}"></script>
+	<script src="{{ asset('dashboard/js/deznav-init.js') }}"></script>
+	
+    <!-- Datatable -->
+    <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js') }}"></script>
 		
 		
 	
