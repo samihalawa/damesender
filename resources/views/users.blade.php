@@ -1,5 +1,9 @@
 @extends('layouts.dashboard')
 
+@section('header')
+    Users
+@endsection('header')
+
 @section('content')
 
 <table id="example" class="table table-striped table-bordered" style="width:100%">

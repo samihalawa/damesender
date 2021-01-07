@@ -1,5 +1,9 @@
 @extends('layouts.dashboard')
 
+@section('header')
+    Send SMS
+@endsection('header')
+
 @section('content')
 {!! Form::open(['url'=>'sms', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
 {!! Form::token() !!}

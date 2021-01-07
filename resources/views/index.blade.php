@@ -1,5 +1,9 @@
 @extends('layouts.dashboard')
 
+@section('header')
+    Send Email
+@endsection('header')
+
 @section('content')
 <div class="container">
 	{!! Form::open(['url'=>'email', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
