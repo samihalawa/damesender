@@ -27,9 +27,6 @@
                 <th style="color:black" >{{ $item->MethodsOfPayments }}</th>
                 <th style="color:black" >{{ $item->name }}</th>
                 <th style="color:black" >{{ $item->requested_amount }}</th>
-                
-
-
             </tr>
             @empty
             <h1>No hay registros</h1>

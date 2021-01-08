@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.base')
 
 @section('header')
     Send Email
@@ -102,6 +102,7 @@
 						<div class="form-group row">
 							<label for="type" class="col-sm-4 col-form-label">Create mail using:</label>
 							<div class="col-sm-8">
+								
 								<select name="type" id="type">
 									<optgroup label="Select one">
 										<option value="0">Rich Text Editor</option>
@@ -182,3 +183,5 @@
 	{!! Form::close() !!}
 </div>
 @endsection
+
+

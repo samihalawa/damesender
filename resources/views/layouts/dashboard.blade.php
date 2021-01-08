@@ -10,15 +10,15 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
     <link href="{{ asset('dashboard/vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ asset('dashboard/vendor/chartist/css/chartist.min.css') }}">
-    <link href="{{ asset('dashboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
 	<link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link href="{{ asset('dashboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
-
+    
+    <link rel="stylesheet" href="{{asset('css/magnific-popup.css')}}">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 
@@ -161,6 +161,13 @@
 
 
     </div>
+    <script src="{{asset('js/vendor/jquery-2.2.4.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="{{asset('js/vendor/bootstrap.min.js')}}"></script>
+
+    
+    <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
+	<script src="{{asset('js/main.js')}}"></script>
     <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
 	<script src="{{ asset('dashboard/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
 	<script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
@@ -188,7 +195,7 @@
 		function carouselReview(){
 			/*  testimonial one function by = owl.carousel.js */
 			/*  testimonial one function by = owl.carousel.js */
-			jQuery('.owl-bank-wallet').owlCarousel({
+		/*	jQuery('.owl-bank-wallet').owlCarousel({
 				loop:true,
 				autoplay:false,
 				margin:0,
@@ -215,7 +222,7 @@
 						items:2
 					}
 				}
-			})		
+			})	
 			
 			jQuery('.testimonial-one').owlCarousel({
 				loop:true,
@@ -243,14 +250,14 @@
 						items:6
 					}
 				}
-			})			
+			})	*/		
 		}
 		
-		jQuery(window).on('load',function(){
+		/*jQuery(window).on('load',function(){
 			setTimeout(function(){
 				carouselReview();
 			}, 1000); 
-		});
+		});*/
 	</script>
 	
 </body>

@@ -34,32 +34,9 @@ $(document).ready(function(){
         $(".main-menu").addClass('mobile-menu');
     });
      
-    $('select').niceSelect();
-    $('.img-pop-up').magnificPopup({
-        type: 'image',
-        gallery:{
-        enabled:true
-        }
-    });
+   
 
-    $('.active-works-carousel').owlCarousel({
-        center: true,
-        items:2,
-        loop:true,
-        margin: 100,
-        dots: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            480: {
-                items: 1,
-            },
-            768: {
-                items: 2,
-            }
-        }
-    });
+   
     // Add smooth scrolling to Menu links
     $(".main-menu li a, .smooth").on('click', function(event) {
             if (this.hash !== "") {
