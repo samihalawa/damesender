@@ -8,5 +8,5 @@
 <p>ver repositorios remoto</p>
 <p>git remote -v</p>
 <br>
-<p>Deploy en servidor</p>
-<p>git push origin main</p>
+<p>Deploy en ec2</p>
+<p>git push production main</p>
