@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignToPaymentsTable extends Migration
+class AddForeignKeyToPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class AddForeignToPaymentsTable extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('users_id')->after('methods_of_payments_id');
-            $table->foreign('users_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');            
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('service_id');            
+            $table->foreign('service_id')->references('id')->on('services');
         });
     }
 

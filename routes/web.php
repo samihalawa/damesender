@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +19,15 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::get('/send', [MailController::class, 'sendTest']);
-Route::get('/', [MailController::class, 'index']);
+
 
 Route::resource('/historial', HistorialPagosController::class);
 Route::resource('/count', CountSMSAndEmailsController::class );
-Route::resource('/email', MailController::class);
+Route::get('/email', [MailController::class, 'index']);
+Route::resource('/mail', MailController::class);
 Route::resource('/sms', SMSController::class);
 Route::resource('/users', UserController::class);
 
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

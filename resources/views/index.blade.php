@@ -1,187 +1,263 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('header')
-    Send Email
-@endsection('header')
+<head>
 
-@section('content')
-<div class="container">
-	{!! Form::open(['url'=>'email', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
-	{!! Form::token() !!}
-		<div class="row justify-content-center">
-			<div class="col-lg-8">
-				<div class="section-title text-center">
-					<h3>Select a list of recipients, add content and send it</h3>
-					<span class="text-uppercase">it's easy</span>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row justify-content-center">
-			<div class="col-lg-10">
-				<span id="recipient-error"></span>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-				@if (session()->has('data'))
-					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						{{session()->get('data')}}
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+  <title>DameSender</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="home/css/scrolling-nav.css" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
+    <link href="dashboard/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="dashboard/vendor/chartist/css/chartist.min.css">
+	<link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+    <link href="dashboard/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link href="dashboard/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="dashboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="dashboard/css/style.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">DameSender</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#emails">Emails</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#sms">SMS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#plans">Plans</a>
+		  </li>
+		  @if(!Auth::user())
+		  <li>
+		  <button type="button" class="btn btn-rounded btn-primary"><a href="/login" style="color:white">Login</a></button>
+		  </li>
+		  <li><button type="button" class="btn btn-rounded btn-primary"><a href="/register" style="color:white">Register</a></button></li>
+		  @else
+		  <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/email">Dashboard</a>
+		  </li>
+		  @endif
+		  
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-primary text-white">
+    <div class="container text-center">
+      <h1>DameSender Logo</h1>
+      
+    </div>
+  </header>
+
+  <section id="emails" class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+			<div class="card mb-3" style="max-width: 540px; border-radius:4px">
+				<div class="row no-gutters">
+					<div class="col-md-4">
+						<img src="img/mail.png" class="card-img" style="padding-top:25%"alt="...">
 					</div>
-				@endif
-
-				@if (count($errors) > 0)
-				<div class="alert alert-danger">
-					<ul>
-					@foreach($errors->all() as $error)
-						<li>{{$error}}</li>
-					@endforeach
-					</ul>
-				</div>
-				@endif
-
-				<ul class="nav nav-tabs" role="tablist" id="steps-tab">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">1. Recipients</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">2. Info</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">3. Template</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">4. Write your mail</a>
-					</li>
-				</ul><!-- Tab panes -->
-
-				<div class="tab-content">
-					<div class="tab-pane active pt-4" id="tabs-1" role="tabpanel">
-						<div class="form-group">
-							<label for="recipients">Select a list of recipients (CSV):</label>
-							<input type="file" class="form-control-file" name="recipients" id="recipients" required>
-						</div>
-					</div>
-					<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">
-						<div class="form-group row">
-							<label for="name" class="col-sm-4 col-form-label">From (name):</label>
-							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (name)..." name="name" id="name" required>
-							</div>
-						</div>
-						
-						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">From (email):</label>
-							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (email)..." name="email" id="email" required>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="cc" class="col-sm-4 col-form-label">CC:</label>
-							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="CC..." name="cc" id="cc">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="bcc" class="col-sm-4 col-form-label">BCC:</label>
-							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="BCC..." name="bcc" id="bcc">
-							</div>
-						</div>
-						
-						<div class="form-group row">
-							<label for="subject" class="col-sm-4 col-form-label">Subject:</label>
-							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="Subject..." name="subject" id="subject">
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane pt-4" id="tabs-3" role="tabpanel">
-						<div class="form-group row">
-							<label for="type" class="col-sm-4 col-form-label">Create mail using:</label>
-							<div class="col-sm-8">
-								
-								<select name="type" id="type">
-									<optgroup label="Select one">
-										<option value="0">Rich Text Editor</option>
-										<option value="1">Template</option>
-									</optgroup>
-								</select>
-							</div>
-						</div>
-
-						<div class="container-plain">
-							<div class="row mt-4 mb-4">
-								<div class="col pt-4">
-									<p class="h4 font-weight-light">Select one of the following responsive templates for email design:</p>
-								</div>
-							</div>
-							@foreach(array_chunk($templates, 3) as $items)
-								<div class="row mb-4">
-									@foreach($items as $i)
-									<div class="mb-4 col-lg-4 col-md-4 col-sm-12 colxs-12 d-flex align-items-stretch template-item">
-										<div class="card card-item" style="width: 18rem;">
-											<img class="card-img-top img-item" src="{{asset($i['dir'])}}" alt="Card image cap">
-											<div class="card-body">
-												<p class="card-text text-capitalize font-weight-bold filename">{{ $i['name'] }}</p>
-											</div>
-										</div>
+					<div class="col-md-8">
+						<div class="card-body text-center">
+							<h5 class="card-title">Email Subscription</h5>
+							<h5 class="text-indigo">400/Month</h5>
+							<p class="card-text"> Charged @2/1000 emails</p>
+							<div class="col-auto">
+								<label class="sr-only" for="inlineFormInputGroup"></label>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+									<div class="input-group-text" style="border-radius: 6px;">1000*</div>
 									</div>
-									@endforeach
+									<input type="number" class="form-control" id="quantityEmails" placeholder=""style="border-radius: 6px;" >
 								</div>
-							@endforeach
+								<br>
+							</div>
+							<a href="#" class="btn btn-primary" style="width: 100%;">Buy</a>
 						</div>
 					</div>
-
-					<div class="tab-pane pt-4" id="tabs-4" role="tabpanel">
-						<div class="form-group mt-4 container-plain">
-							<label for="plain">Content:</label>
-							<textarea class="form-control" name="plain" id="plain" rows="10"></textarea>
-						</div>
-						<!--  <div class="form-group mt-4 hidden" id="container-editor">
-							<label for="content">Content:</label>
-							<textarea name="content" id="editor"></textarea>
-						</div> -->
-						<div class="d-flex justify-content-center">
-							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>
-							<button id="send-mail" class="btn btn-primary">Send</button>
-						</div>
-						</div>
-				</div>
-
-
 					
-				
-
-				<!-- The Modal -->
-				<div class="modal" id="myModal">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-						
-							<!-- Modal Header -->
-							<div class="modal-header">
-								<h4 class="modal-title">Mail Template Viewer</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-							</div>
-							
-							<!-- Modal body -->
-							<div class="modal-body" id="viewer"></div>
-							
-							<!-- Modal footer -->
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-
+ 				 </div>
 			</div>
 		</div>
-	{!! Form::close() !!}
-</div>
-@endsection
+		<div class="col">
+			<div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;border-radius:4px">
+			<div class="card-body">
+				<h5 class="text-indigo">Free Emails </h5>
+				<p style="font-size:0.8rem; padding-top:2px;">Free Email           -</p>
+				<p style="font-size:0.8rem;">Emails Remaining     <b>15485 (unbranded)</b> </p>
+				<p class="card-text" style="font-size:0.8rem;">Prueba de descripcion de las cards, example test of descriptions Cards</p>
+				<h5 class="text-indigo">Email Credits</h5>
+				<p style="font-size:0.8rem; padding-top:2px;">Email Credits    <b>8896 Auto Rechargue</b> </p>
+				<p class="card-text" style="font-size:0.8rem; padding-top:2px;" >Prueba de descripcion de las cards, example test of descriptions Cards</p>
+			</div>
+			</div>
+		</div>
+	  </div>
+	 
+    </div>
+  </section>
 
+  <section id="sms" class="bg-light">
+  <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+			<div class="card mb-3" style="max-width: 540px; border-radius:4px">
+				<div class="row no-gutters">
+					<div class="col-md-4 text-center">
+						<img src="img/sms.jpg" class="card-img text-center"style="padding-top:25%" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body text-center">
+							<h5 class="card-title">SMS Subscription</h5>
+							<h5 class="text-indigo">400/Month</h5>
+							<p class="card-text"> Charged @2/1000 SMS</p>
+							<div class="col-auto">
+								<label class="sr-only" for="inlineFormInputGroup"></label>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+									<div class="input-group-text" style="border-radius: 6px;">1000*</div>
+									</div>
+									<input type="number" class="form-control" id="quantitySMS" placeholder=""style="border-radius: 6px;" >
+								</div>
+								<br>
+							</div>
+							<a href="#" class="btn btn-primary" style="width: 100%;">Buy</a>
+						</div>
+					</div>
+					
+ 				 </div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;border-radius:4px">
+			
+			<div class="card-body">
+				<h5 class="text-indigo">Free SMS</h5>
+				<p style="font-size:0.8rem; padding-top:2px;">Free SMS           -</p>
+				<p style="font-size:0.8rem;">SMS Remaining     <b>15485 (unbranded)</b> </p>
+				<p class="card-text" style="font-size:0.8rem;">Prueba de descripcion de las cards, example test of descriptions cards</p>
+			</div>
+			</div>
+		</div>
+	  </div>
+    </div>
+  </section>
 
+  <section id="plans" >
+  <div class="container">
+      	<div class="row" >	
+			<h2 style="margin-left:42%">Our Plans</h2>
+			<br>
+		</div>
+  
+	<div class="row">
+		<div class="col">
+		<div class="card text-center bg-light" style="width: 18rem;">
+				<div class="card-body">
+					<h5 class="card-title">Plan de prueba Silver</h5>
+					<p class="card-text">2000 SMS + 1000 Emails $400/Month</p>
+					<a href="#" class="btn btn-rounded btn-primary">Buy</a>
+				</div>
+			</div>
+		</div>
+			<div class="col">
+			<div class="card text-center" style="width: 18rem;">
+				<div class="card-body">
+					<h5 class="card-title">Plan de prueba Gold</h5>
+					<p class="card-text">5000 SMS + 3000 Emails $600/Month</p>
+					<p class="card-text">Free 500 Emails Credits</p>
+					<a href="#" class="btn btn-rounded btn-primary">Buy</a>
+				</div>
+			</div>
+			</div>
+			<div class="col">
+			<div class="card text-center" style="width: 18rem;">
+				<div class="card-body">
+					<h5 class="card-title">Plan de prueba Gold</h5>
+					<p class="card-text">5000 SMS + 3000 Emails $600/Month</p>
+					<p class="card-text">Free 500 Emails Credits</p>
+					<a href="#" class="btn btn-rounded btn-primary">Buy</a>
+				</div>
+        	</div>
+			</div>
+			
+	</div>	
+	</div>  
+      
+	
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; DameSender</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="home/vendor/jquery/jquery.min.js"></script>
+  <script src="home/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="home/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  
+
+  <!-- Plugin JavaScript -->
+  <script src="home/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="home/js/scrolling-nav.js"></script>
+
+  <script src="js/vendor/jquery-2.2.4.min.js"></script>
+    
+    <script src="js/vendor/bootstrap.min.js"></script>   
+    <script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/main.js'"></script>
+    <script src="dashboard/vendor/global/global.min.js"></script>
+	<script src="dashboard/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="dashboard/vendor/chart.js/Chart.bundle.min.js"></script>
+    <script src="dashboard/js/custom.min.js"></script>
+	<script src="dashboard/js/deznav-init.js"></script>
+    <script src="dashboard/vendor/owl-carousel/owl.carousel.js"></script>
+    <script src="dashboard/vendor/global/global.min.js"></script>
+	<script src="dashboard/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="dashboard/js/custom.min.js"></script>
+	<script src="dashboard/js/deznav-init.js"></script>	
+    <!-- Datatable -->
+    <script src="dashboard/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="dashboard/js/plugins-init/datatables.init.js"></script>
+	<!-- Chart piety plugin files -->
+    <script src="dashboard/vendor/peity/jquery.peity.min.js"></script>
+	<!-- Dashboard 1 -->
+	<script src="dashboard/js/dashboard/dashboard-1.js"></script>
+
+</body>
+
+</html>

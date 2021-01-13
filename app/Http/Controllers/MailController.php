@@ -12,17 +12,32 @@ use App\Jobs\ProcessEmail;
 class MailController extends Controller
 {
 
+   
     public function sendTest(){
 
-        $email="houltman@gmail.com";
-        $user="Gabriel Houltman";
-        $subject="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $body ="Feliz año";
-        $from="atencion@megacursos.com";
-        $name="Megacursos";
+        $data["email"]="leonardobh96@gmail.com";
+        $data["user"]="Leonardo Burgos";
+        $data["subject"]="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
+        $data["body"] ="Feliz año";
+        $data["from"]="atencion@megacursos.com";
+        $data["name"]="Megacursos";
+
+        Mail::send(
+            [],
+            [],
+            function ($message) use ($data) {
+                $message
+               // ->to($data['recipient'])
+                ->to($data["email"], $data["user"])
+                ->subject($data["subject"])
+                ->from($data["from"],$data["name"])
+               // ->from($data['email'], $data['name'])
+                ->setBody($data["body"], 'text/html');
+            }
+        );
 
         //envio de email por colas
-        ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user);
+       // ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user);
 
 
     }
@@ -40,9 +55,10 @@ class MailController extends Controller
             ];
         }
         
-        return view('index', ['templates' => $templates]);
+        return view('mail', ['templates' => $templates]);
     }
 
+   
     public function store(Request $request) {
         $filePath = $request->file('recipients')->getRealPath();
 
@@ -80,7 +96,7 @@ class MailController extends Controller
                 return redirect::back()->withErrors("Error sending mail.");
             } else {
                 $data = 'Mail sent successfully!';
-                return Redirect::to('/')->with('data', $data);
+                return Redirect::to('/email')->with('data', $data);
             }
         } else {
             return redirect::back()->withErrors("Error sending mail.");

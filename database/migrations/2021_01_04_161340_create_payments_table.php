@@ -16,9 +16,11 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('quantity');
-            $table->unsignedBigInteger('methods_of_payments_id');
-            $table->foreign('methods_of_payments_id')->references('id')->on('methods_of_payments');
-            
+            $table->bigInteger('requested_amount');
+            $table->string('method_of_payment');
+            $table->bigInteger('account_number')->unique();
+            $table->integer('cvv')->nullable();
+            $table->date('due_date');
             $table->timestamps();
         });
     }
