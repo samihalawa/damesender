@@ -11,7 +11,7 @@ class SMSController extends Controller
 {
     public function __construct(){
         // Persmisos para acceder a estos metodos
-    //    $this->middleware('auth');
+        //$this->middleware('auth');
        // $this->middleware('roledSMS');
     }
 

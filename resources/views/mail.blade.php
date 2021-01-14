@@ -53,6 +53,9 @@
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">4. Write your mail</a>
 					</li>
+					<li>
+					<a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">5. prueba</a>
+					</li>
 				</ul><!-- Tab panes -->
 
 				<div class="tab-content">
@@ -148,7 +151,37 @@
 							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>
 							<button id="send-mail" class="btn btn-primary">Send</button>
 						</div>
+					</div>
+					<div class="tab-pane pt-4" id="tabs-5" role="tabpanel">
+						<div class="container py-4">
+							<h5>Bootstrap 4 full click cards...</h5>
+							<div class="card-deck-wrapper">
+								<div class="card-deck">
+									<div class="card p-2">
+										<a class="card-block stretched-link text-decoration-none" href>
+											<h4 class="card-title">Card title</h4>
+											<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+										</a>
+									</div>
+									<div class="card p-2">
+										<a class="card-block stretched-link text-decoration-none" href="/">
+											<h4 class="card-title">Card title</h4>
+											<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+										</a>
+									</div>
+									<div class="card p-2">
+										<a class="card-block stretched-link text-decoration-none" href>
+											<h4 class="card-title">Card title</h4>
+											<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+										</a>
+									</div>
+								</div>
+							</div>
 						</div>
+					</div>
 				</div>
 
 

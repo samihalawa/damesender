@@ -59,7 +59,7 @@
 		  <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/email">Dashboard</a>
 		  </li>
-		  @endif
+		  @endif 
 		  
         </ul>
       </div>
