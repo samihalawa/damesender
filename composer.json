@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.0",
+        "pda/pheanstalk": "^4.0",
         "twilio/sdk": "^6.15"
     },
     "require-dev": {
