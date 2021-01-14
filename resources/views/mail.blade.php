@@ -42,19 +42,16 @@
 
 				<ul class="nav nav-tabs" role="tablist" id="steps-tab">
 					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">1. Recipients</a>
+						<a class="nav-link step-tab active" data-toggle="tab" href="#tabs-1" role="tab">1. Recipients</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">2. Info</a>
+						<a class="nav-link step-tab" data-toggle="tab" href="#tabs-2" role="tab">2. Info</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">3. Template</a>
+						<a class="nav-link step-tab" data-toggle="tab" href="#tabs-3" role="tab">3. Template</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">4. Write your mail</a>
-					</li>
-					<li>
-					<a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">5. prueba</a>
+						<a class="nav-link step-tab" data-toggle="tab" href="#tabs-4" role="tab">4. Write your mail</a>
 					</li>
 				</ul><!-- Tab panes -->
 
@@ -143,43 +140,13 @@
 							<label for="plain">Content:</label>
 							<textarea class="form-control" name="plain" id="plain" rows="10"></textarea>
 						</div>
-						<!--  <div class="form-group mt-4 hidden" id="container-editor">
+						<div class="form-group mt-4 hidden" id="container-editor">
 							<label for="content">Content:</label>
 							<textarea name="content" id="editor"></textarea>
-						</div> -->
+						</div>
 						<div class="d-flex justify-content-center">
 							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>
 							<button id="send-mail" class="btn btn-primary">Send</button>
-						</div>
-					</div>
-					<div class="tab-pane pt-4" id="tabs-5" role="tabpanel">
-						<div class="container py-4">
-							<h5>Bootstrap 4 full click cards...</h5>
-							<div class="card-deck-wrapper">
-								<div class="card-deck">
-									<div class="card p-2">
-										<a class="card-block stretched-link text-decoration-none" href>
-											<h4 class="card-title">Card title</h4>
-											<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-										</a>
-									</div>
-									<div class="card p-2">
-										<a class="card-block stretched-link text-decoration-none" href="/">
-											<h4 class="card-title">Card title</h4>
-											<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-										</a>
-									</div>
-									<div class="card p-2">
-										<a class="card-block stretched-link text-decoration-none" href>
-											<h4 class="card-title">Card title</h4>
-											<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-											<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-										</a>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -217,3 +184,6 @@
 </div>
 @endsection
 
+@push('js')
+<script src="{{ asset('dashboard/js/template.js') }}"></script>
+@endpush

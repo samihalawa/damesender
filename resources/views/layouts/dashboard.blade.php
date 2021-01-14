@@ -19,6 +19,7 @@
     
     <link rel="stylesheet" href="{{asset('css/magnific-popup.css')}}">
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <link href="{{ asset('dashboard/css/template.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -173,6 +174,8 @@
 
     </div>
     <script src="{{asset('js/vendor/jquery-2.2.4.min.js')}}"></script>
+    <script src="{{asset('js/jquery.nice-select.min.js')}}"></script>
+    <script src="{{asset('js/jquery.ajaxchimp.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="{{asset('js/vendor/bootstrap.min.js')}}"></script>   
     <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
@@ -186,7 +189,7 @@
     <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
 	<script src="{{ asset('dashboard/vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('dashboard/js/custom.min.js') }}"></script>
-	<script src="{{ asset('dashboard/js/deznav-init.js') }}"></script>	
+    <script src="{{ asset('dashboard/js/deznav-init.js') }}"></script>
     <!-- Datatable -->
     <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js') }}"></script>
@@ -261,7 +264,9 @@
 				carouselReview();
 			}, 1000); 
 		});*/
-	</script>
+    </script>
+    
+    @stack('js')
 	
 </body>
 </html>

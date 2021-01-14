@@ -51,9 +51,7 @@ $(document).ready(function(){
         } 
     });
 
-    $(document).ready(function() {
-        $('#mc_embed_signup').find('form').ajaxChimp();
-    });
+    
 
     $('#type').on('change', function() {
         if (this.value === '1') {
@@ -73,6 +71,7 @@ $(document).ready(function(){
 
     $('.template-item').on('click', function() {
         var item = $(this).find('.card');
+        console.log(item);
 
         var hasClass = item.hasClass('selected-item');
 
