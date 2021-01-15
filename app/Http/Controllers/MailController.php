@@ -11,6 +11,11 @@ use App\Jobs\ProcessEmail;
 
 class MailController extends Controller
 {
+    public function __construct(){
+        // Persmisos para acceder a estos metodos
+        //$this->middleware('auth');
+        $this->middleware('roledSMS');
+    }
 
    
     public function sendTest(){
