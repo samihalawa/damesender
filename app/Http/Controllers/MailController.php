@@ -13,8 +13,8 @@ class MailController extends Controller
 {
     public function __construct(){
         // Persmisos para acceder a estos metodos
-        $this->middleware('auth');
-        $this->middleware('roledSMS');
+       // $this->middleware('auth');
+       // $this->middleware('roledSMS');
        // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
 
     }
@@ -47,7 +47,7 @@ class MailController extends Controller
         $email="houltman@gmail.com";
         $user="Gabriel Houltman";
         $subject="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $body ="Feliz año";
+        $body ="Feliz año desde beanktald";
         $from="atencion@megacursos.com";
         $name="Megacursos";
         //envio de email por colas
