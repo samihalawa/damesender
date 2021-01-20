@@ -13,15 +13,18 @@ class MailController extends Controller
 {
     public function __construct(){
         // Persmisos para acceder a estos metodos
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->middleware('roledSMS');
+       // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
+
     }
 
    
     public function sendTest(){
 
-        $data["email"]="leonardobh96@gmail.com";
-        $data["user"]="Leonardo Burgos";
+        /*
+        $data["email"]="houltman@gmail.com";
+        $data["user"]="Gabriel Houltman";
         $data["subject"]="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
         $data["body"] ="Feliz año";
         $data["from"]="atencion@megacursos.com";
@@ -40,10 +43,16 @@ class MailController extends Controller
                 ->setBody($data["body"], 'text/html');
             }
         );
-
+        */
+        $email="houltman@gmail.com";
+        $user="Gabriel Houltman";
+        $subject="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
+        $body ="Feliz año";
+        $from="atencion@megacursos.com";
+        $name="Megacursos";
         //envio de email por colas
-       // ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user);
-
+        ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
+        ->delay(now()->addSeconds(1));
 
     }
     public function index() {
