@@ -92,7 +92,7 @@ class MailController extends Controller
                     //procesamient de emails por colas
                     ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
                     ->delay(now()->addSeconds(1));
-                    return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");                 
+                                  
                     /*
                     Mail::send(
                         [],
@@ -107,6 +107,7 @@ class MailController extends Controller
                     */
                 }
             }
+            return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");  
 
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
