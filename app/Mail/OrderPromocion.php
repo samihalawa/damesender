@@ -35,14 +35,8 @@ class OrderPromocion extends Mailable
      */
     public function build()
     {
+
         return $this->from($this->fromx,$this->name)
-                    ->view('emails.template')
-                    ->with([
-                        //enviar variables
-                        'body' => $this->body,
-                        //'orderPrice' => $this->order->price,
-                    ]);
-                    //vista con email de campañas
-                    //return $this->view('view.emails.enero');
+                    ->html($this->body);
     }
 }

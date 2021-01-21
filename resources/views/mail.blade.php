@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container">
-	{!! Form::open(['url'=>'email', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
+	{!! Form::open(['url'=>'mail', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
 	{!! Form::token() !!}
 		<div class="row justify-content-center">
 			<div class="col-lg-8">
@@ -73,7 +73,7 @@
 						<div class="form-group row">
 							<label for="email" class="col-sm-4 col-form-label">From (email):</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (email)..." name="email" id="email" required>
+								<input class="form-control" type="email" placeholder="From (email)..." name="email" id="email" required>
 							</div>
 						</div>
 
@@ -94,7 +94,7 @@
 						<div class="form-group row">
 							<label for="subject" class="col-sm-4 col-form-label">Subject:</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="Subject..." name="subject" id="subject">
+								<input class="form-control" type="text" placeholder="Subject..." name="subject" id="subject" required>
 							</div>
 						</div>
 					</div>
@@ -137,12 +137,15 @@
 
 					<div class="tab-pane pt-4" id="tabs-4" role="tabpanel">
 						<div class="form-group mt-4 container-plain">
-							<label for="plain">Content:</label>
+							<label for="plain">Content1:</label>
 							<textarea class="form-control" name="plain" id="plain" rows="10"></textarea>
 						</div>
 						<div class="form-group mt-4 hidden" id="container-editor">
-							<label for="content">Content:</label>
-							<textarea name="content" id="editor"></textarea>
+							<label for="content">Content2:</label>
+							<!-- quite el editor id=editor porque transaforma el html -->
+							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>
+						
+							<textarea class="form-control" name="content" name="plain" id="plain" rows="10"></textarea>
 						</div>
 						<div class="d-flex justify-content-center">
 							<button id="preview-btn" type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal">Preview</button>

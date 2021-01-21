@@ -46,8 +46,6 @@ class ProcessEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->email,$this->user)
-        // ->cc($moreUsers)
-        // ->bcc($evenMoreUsers)
          ->send(new OrderPromocion($this->subject,$this->body,$this->from,$this->name));
     }
 }

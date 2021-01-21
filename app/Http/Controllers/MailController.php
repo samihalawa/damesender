@@ -77,16 +77,23 @@ class MailController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
 
         $contacts = array_map('str_getcsv', file($filePath));
-        
-        if ($contacts) {            
-            $data['body'] = ($request->type == 0? $request->content : $request->plain);
-            $data['subject'] = $request->subject;
-            $data['email'] = $request->email;
-            $data['name'] = $request->name;
+
+        if ($contacts) {  
+
+            $body = ($request->type == 0? $request->content : $request->plain);
+            $subject = $request->subject;
+            $from = $request->email;
+            $name = $request->name;
             
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                    $data['recipient'] = $contact[4];
+                    $email = $contact[4];
+                    $user =$contact[0]." ".$contact[1];
+                    //procesamient de emails por colas
+                    ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
+                    ->delay(now()->addSeconds(1));
+                    return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");                 
+                    /*
                     Mail::send(
                         [],
                         [],
@@ -97,23 +104,12 @@ class MailController extends Controller
                             ->setBody($data['body'], 'text/html');
                         }
                     );
+                    */
                 }
             }
-            $varir  = json_encode($contacts);
-          foreach($contacts as $index => $contact){
-            var_dump($contact[5]);
-            echo "<br>";
-          }
-           
 
-            if(count(Mail::failures()) > 0) {
-                return redirect::back()->withErrors("Error sending mail.");
-            } else {
-                $data = 'Mail sent successfully!';
-                return Redirect::to('/email')->with('data', $data);
-            }
         } else {
-            return redirect::back()->withErrors("Error sending mail.");
+            return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
         }
     }
 }

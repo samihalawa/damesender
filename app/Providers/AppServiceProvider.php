@@ -37,13 +37,14 @@ class AppServiceProvider extends ServiceProvider
                 "payload"=>$event->job->payload()
             ];
             */
-
+/*
             $log=  DB::table('testemail')->insert(
                 [
                 'job' =>json_encode($event->job->payload()),
                 'info'=>"antes",
                 ]
             );
+            */
             
            // DB::commit();
             
