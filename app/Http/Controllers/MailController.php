@@ -22,9 +22,6 @@ class MailController extends Controller
 
    
     public function sendTest(){
-        phpinfo();
-        return;
-
         /*
         $data["email"]="houltman@gmail.com";
         $data["user"]="Gabriel Houltman";
@@ -81,8 +78,6 @@ class MailController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
 
         $contacts = array_map('str_getcsv', file($filePath));
-      
-        return $contacts;
 
         if ($contacts) {  
 
