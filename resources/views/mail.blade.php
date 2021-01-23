@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container">
-	{!! Form::open(['url'=>'mail', 'method'=>'POST', 'autocomplete'=>'off', 'files' => true]) !!}
+	{!! Form::open(['url'=>'mail', 'method'=>'POST', 'autocomplete'=>'off', "enctype"=>"multipart/form-data"]) !!}
 	{!! Form::token() !!}
 		<div class="row justify-content-center">
 			<div class="col-lg-8">

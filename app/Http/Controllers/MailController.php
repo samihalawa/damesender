@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\CustomMailable;
 use Illuminate\Http\Request;
+use App\Http\Requests\MailRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Mail\OrderPromocion;
@@ -21,6 +22,8 @@ class MailController extends Controller
 
    
     public function sendTest(){
+        phpinfo();
+        return;
 
         /*
         $data["email"]="houltman@gmail.com";
@@ -73,10 +76,13 @@ class MailController extends Controller
     }
 
    
-    public function store(Request $request) {
+    public function store(MailRequest $request) {
+
         $filePath = $request->file('recipients')->getRealPath();
 
         $contacts = array_map('str_getcsv', file($filePath));
+      
+        return $contacts;
 
         if ($contacts) {  
 
