@@ -52,6 +52,7 @@ class MailController extends Controller
         $name="Megacursos";
         //envio de email por colas
         ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
+       // ->withMeta('idddd')
         ->delay(now()->addSeconds(1));
 
     }
