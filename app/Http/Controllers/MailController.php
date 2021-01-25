@@ -1,115 +1,90 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Mail\CustomMailable;
-use Illuminate\Http\Request;
 use App\Http\Requests\MailRequest;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use App\Mail\OrderPromocion;
 use App\Jobs\ProcessEmail;
+use Illuminate\Support\Facades\Redirect;
 
 class MailController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         // Persmisos para acceder a estos metodos
         $this->middleware('auth');
         $this->middleware('roledSMS');
-       // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
+        // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
 
     }
 
-   
-    public function sendTest(){
-        /*
-        $data["email"]="houltman@gmail.com";
-        $data["user"]="Gabriel Houltman";
-        $data["subject"]="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $data["body"] ="Feliz año";
-        $data["from"]="atencion@megacursos.com";
-        $data["name"]="Megacursos";
+    public function sendTest()
+    {
 
-        Mail::send(
-            [],
-            [],
-            function ($message) use ($data) {
-                $message
-               // ->to($data['recipient'])
-                ->to($data["email"], $data["user"])
-                ->subject($data["subject"])
-                ->from($data["from"],$data["name"])
-               // ->from($data['email'], $data['name'])
-                ->setBody($data["body"], 'text/html');
-            }
-        );
-        */
-        $email="houltman@gmail.com";
-        $user="Gabriel Houltman";
-        $subject="Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $body ="Feliz año desde beanktald";
-        $from="atencion@megacursos.com";
-        $name="Megacursos";
+        $email = "houltman@gmail.com";
+        $user = "Gabriel Houltman";
+        $subject = "Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
+        $body = "Feliz año desde beanktald";
+        $from = "atencion@megacursos.com";
+        $name = "Megacursos";
         //envio de email por colas
-        ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
-       // ->withMeta('idddd')
-        ->delay(now()->addSeconds(1));
+        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+            ->delay(now()->addSeconds(1));
 
     }
-    public function index() {
+    public function index()
+    {
         $files = array_diff(scandir('../public/templates/img'), ['..', '.']);
 
         $templates = [];
 
         foreach ($files as $file) {
-            $filename = str_replace('_' , ' ', explode('.', $file)[0]);
-            
+            $filename = str_replace('_', ' ', explode('.', $file)[0]);
+
             $templates[] = [
                 'dir' => 'templates/img/' . $file,
-                'name' => $filename
+                'name' => $filename,
             ];
         }
-        
+
         return view('mail', ['templates' => $templates]);
     }
 
-   
-    public function store(MailRequest $request) {
+    public function store(MailRequest $request)
+    {
 
         $filePath = $request->file('recipients')->getRealPath();
 
         $contacts = array_map('str_getcsv', file($filePath));
 
-        if ($contacts) {  
+        if ($contacts) {
 
-            $body = ($request->type == 0? $request->content : $request->plain);
+            $body = ($request->type == 0 ? $request->content : $request->plain);
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
-            
+
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     $email = $contact[4];
-                    $user =$contact[0]." ".$contact[1];
+                    $user = $contact[0] . " " . $contact[1];
                     //procesamient de emails por colas
-                    ProcessEmail::dispatch($subject, $body,$email,$from,$name,$user)
-                    ->delay(now()->addSeconds(1));
-                                  
+                    ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+                        ->delay(now()->addSeconds(1));
+
                     /*
-                    Mail::send(
-                        [],
-                        [],
-                        function ($message) use ($data) {
-                            $message->to($data['recipient'])
-                            ->subject($data['subject'])
-                            ->from($data['email'], $data['name'])
-                            ->setBody($data['body'], 'text/html');
-                        }
-                    );
-                    */
+                Mail::send(
+                [],
+                [],
+                function ($message) use ($data) {
+                $message->to($data['recipient'])
+                ->subject($data['subject'])
+                ->from($data['email'], $data['name'])
+                ->setBody($data['body'], 'text/html');
+                }
+                );
+                 */
                 }
             }
-            return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");  
+            return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
