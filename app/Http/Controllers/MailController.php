@@ -26,8 +26,14 @@ class MailController extends Controller
         $from = "atencion@megacursos.com";
         $name = "Megacursos";
         //envio de email por colas
+
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-            ->delay(now()->addSeconds(1));
+            ->delay(now()->addSeconds($delay+5));
+        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+            ->delay(now()->addSeconds($delay+5));
+
+        return "i";
+
 
     }
     public function index()
@@ -52,24 +58,31 @@ class MailController extends Controller
     {
 
         $filePath = $request->file('recipients')->getRealPath();
+        $filePath="/var/www/html/damesender/megacursos_CONTACT.csv";
 
         $contacts = array_map('str_getcsv', file($filePath));
+
+       // $suma=0;
+        $delay=10;
 
         if ($contacts) {
 
             $body = ($request->type == 0 ? $request->content : $request->plain);
+            $body=
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
 
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                    if($contact[4]){
+                   if(!$contact[4]=""){
+                       // $suma++;
                          $email = $contact[4];
                          $user = $contact[0] . " " . $contact[1];
                          //procesamient de emails por colas
                          ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                             ->delay(now()->addSeconds(1));
+                             ->delay(now()->addSeconds($delay+10));
+                             
                     }
                     /*
                 Mail::send(
@@ -85,6 +98,7 @@ class MailController extends Controller
                  */
                 }
             }
+           // return $suma;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {
