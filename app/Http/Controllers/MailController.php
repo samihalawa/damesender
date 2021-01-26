@@ -26,7 +26,7 @@ class MailController extends Controller
         $from = "atencion@megacursos.com";
         $name = "Megacursos";
         //envio de email por colas
-
+        $delay=10;
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
             ->delay(now()->addSeconds($delay+5));
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
