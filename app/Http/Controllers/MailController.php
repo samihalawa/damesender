@@ -68,23 +68,22 @@ class MailController extends Controller
         if ($contacts) {
 
             $body = ($request->type == 0 ? $request->content : $request->plain);
-            $body=
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
 
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                    $email = $contact[4];
+                   // $email = $contact[4];
                    // echo $email;
                    if($contact[4]!=" "){
                          $delay+5;
                          $email = $contact[4];
                          $user = $contact[0] . " " . $contact[1];
                          //procesamient de emails por colas
-                         
                          ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                             ->delay(now()->addSeconds($delay+15));     
+                             ->delay(now()->addSeconds($delay+15));   
+                              
                     }
                 }
             }
