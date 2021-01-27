@@ -58,7 +58,7 @@ class MailController extends Controller
     {
 
         $filePath = $request->file('recipients')->getRealPath();
-        $filePath="/var/www/damesender/megacursos_CONTACT.csv";
+       // $filePath="/var/www/damesender/megacursos_CONTACT.csv";
 
         $contacts = array_map('str_getcsv', file($filePath));
 
