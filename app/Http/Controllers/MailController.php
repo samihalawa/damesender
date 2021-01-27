@@ -63,7 +63,7 @@ class MailController extends Controller
         $contacts = array_map('str_getcsv', file($filePath));
 
        // $suma=0;
-        $delay=6;
+        $delay=10;
 
         if ($contacts) {
 
@@ -78,7 +78,7 @@ class MailController extends Controller
                     $email = $contact[4];
                    // echo $email;
                    if($contact[4]!=" "){
-                         $delay+6;
+                         $delay+5;
                          $email = $contact[4];
                          $user = $contact[0] . " " . $contact[1];
                          //procesamient de emails por colas
