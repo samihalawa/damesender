@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
+use App\Jobs\ProcessNotification;
 use Illuminate\Support\Facades\Redirect;
 
 class MailController extends Controller
@@ -22,17 +23,18 @@ class MailController extends Controller
         $email = "houltman@gmail.com";
         $user = "Gabriel Houltman";
         $subject = "Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $body = "Feliz año desde beanktald";
+        $body = "Prueba beanstalkd y ses notification";
         $from = "atencion@megacursos.com";
         $name = "Megacursos";
         //envio de email por colas
         $delay=10;
+        ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
+            ->delay(now()->addSeconds($delay+5));
+            /*
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
             ->delay(now()->addSeconds($delay+5));
-        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-            ->delay(now()->addSeconds($delay+5));
-
-        return "i";
+*/
+        return "ok";
 
 
     }
@@ -58,7 +60,7 @@ class MailController extends Controller
     {
 
         $filePath = $request->file('recipients')->getRealPath();
-       // $filePath="/var/www/damesender/megacursos_CONTACT.csv";
+       // $filePath="/var/www/damesender/megacursos_CONTACT.csv";archivo fijo
 
         $contacts = array_map('str_getcsv', file($filePath));
 

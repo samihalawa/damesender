@@ -19,6 +19,9 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('amazon-sns/email-notifications', 'AmazonController@emailNotifications');
+
 Route::get('/send', [MailController::class, 'sendTest']);
 
 
