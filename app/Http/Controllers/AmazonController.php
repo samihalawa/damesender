@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sendemail;
 use Illuminate\Http\Request;
 
 class AmazonController extends Controller
@@ -16,8 +17,66 @@ class AmazonController extends Controller
         //
     }
 
-    public function emailNotifications(){
-        
+    public function emailNotifications(Request $request)
+    {
+        //  Log::info(request()->json()->all());
+        $data = $request->json()->all();
+
+        if ($data['Type'] == 'SubscriptionConfirmation') {
+            file_get_contents($data['SubscribeURL']);
+        } elseif ($data['Type'] == 'Notification') {
+            $message = json_decode($data['Message'], true);
+            // Log::info($message);
+            if ($message == 'test') {
+                return response('OK', 200);
+            }
+            $message_id = $message['mail']['messageId'];
+            switch ($message['eventType']) {
+                case 'Bounce':
+                    $bounce = $message['bounce'];
+                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email->bounced = true;
+                    $email->save();
+                    // foreach ($bounce['bouncedRecipients'] as $bouncedRecipient){
+                    //     $emailAddress = $bouncedRecipient['emailAddress'];
+                    //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Bounce']);
+                    //     if($emailRecord){
+                    //         $emailRecord->increment('repeated_attempts',1);
+                    //     }
+                    // }
+                    break;
+                case 'Complaint':
+                    $complaint = $message['complaint'];
+                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email->complaint = true;
+                    $email->save();
+                    // foreach($complaint['complainedRecipients'] as $complainedRecipient){
+                    //     $emailAddress = $complainedRecipient['emailAddress'];
+                    //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Complaint']);
+                    //     if($emailRecord){
+                    //         $emailRecord->increment('repeated_attempts',1);
+                    //     }
+                    // }
+                    break;
+                case 'Open':
+                    $open = $message['open'];
+                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email->opened = true;
+                    $email->save();
+                    break;
+                case 'Delivery':
+                    $delivery = $message['delivery'];
+                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email->delivered = true;
+                    $email->save();
+                    break;
+                default:
+                    // Do Nothing
+                    break;
+            }
+        }
+
+        return response('OK', 200);
     }
 
     /**

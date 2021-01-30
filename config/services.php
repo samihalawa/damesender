@@ -29,7 +29,7 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
         'options' => [
-           // 'ConfigurationSetName' => env('AWS_SES_CONFIG_SET', 'email-notifications'),
+            'ConfigurationSetName' => env('AWS_SES_CONFIG_SET', 'email-notifications'),
         ],
     ],
 

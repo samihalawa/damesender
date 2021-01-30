@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
-use App\Jobs\ProcessNotification;
+use App\Models\Sendemail;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
 
@@ -28,31 +29,42 @@ class MailController extends Controller
         $from = "atencion@megacursos.com";
         $name = "Megacursos";
         //envio de email por colas
-        $delay=10;
+        $delay = 10;
         /*
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
-            ->delay(now()->addSeconds($delay+5));
-*/
-            $headers = "";
-            $data="sss";
-            $info = (object) [
-                'to_email_address'=>"houltman@gmail.com",	
-                'subject' => 'hola probando',
-          ];
-            Mail::send('emails.enero', ['data' => $data], function ($message) use (&$headers, $info) {
-                $message->to($info->to_email_address)->subject($info->subject);
-                $headers = $message->getHeaders();
-            });
-    
-            $message_id = $headers->get('X-SES-Message-ID')->getValue();
+        ->delay(now()->addSeconds($delay+5));
+         */
+        $headers = "";
+        $data = "sss";
+        $info = (object) [
+            'to_email_address' => "houltman@gmail.com",
+            'subject' => 'hola probando ses notificacion',
+        ];
+        $mensxx="probando";
+        Mail::send('emails.enero', ['data' => $data], function ($message) use (&$headers, $info) {
+            $message->to($info->to_email_address)->subject($info->subject);
+            $headers = $message->getHeaders();
+        });
 
-            return $message_id;
-            /*
+        $message_id = $headers->get('X-SES-Message-ID')->getValue();
+
+        // Log::info($message_id);
+        if ($message_id) {
+            $sentEmail = new Sendemail;
+            $sentEmail->to_email_address = $info->to_email_address;
+            $sentEmail->subject = $info->subject;
+            $sentEmail->message = $mensxx;
+            $sentEmail->aws_message_id = $message_id;
+            $sentEmail->save();
+           // return redirect('/sent_emails')->with('success', 'Email Sent');
+        }
+
+        return $message_id;
+        /*
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-            ->delay(now()->addSeconds($delay+5));
-*/
+        ->delay(now()->addSeconds($delay+5));
+         */
         return "ok";
-
 
     }
     public function index()
@@ -77,12 +89,12 @@ class MailController extends Controller
     {
 
         $filePath = $request->file('recipients')->getRealPath();
-       // $filePath="/var/www/damesender/megacursos_CONTACT.csv";archivo fijo
+        // $filePath="/var/www/damesender/megacursos_CONTACT.csv";archivo fijo
 
         $contacts = array_map('str_getcsv', file($filePath));
 
-       // $suma=0;
-        $delay=10;
+        // $suma=0;
+        $delay = 10;
 
         if ($contacts) {
 
@@ -93,20 +105,20 @@ class MailController extends Controller
 
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                   // $email = $contact[4];
-                   // echo $email;
-                   if($contact[4]!=" "){
-                         $delay+5;
-                         $email = $contact[4];
-                         $user = $contact[0] . " " . $contact[1];
-                         //procesamient de emails por colas
-                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                             ->delay(now()->addSeconds($delay+15));   
-                              
+                    // $email = $contact[4];
+                    // echo $email;
+                    if ($contact[4] != " ") {
+                        $delay + 5;
+                        $email = $contact[4];
+                        $user = $contact[0] . " " . $contact[1];
+                        //procesamient de emails por colas
+                        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+                            ->delay(now()->addSeconds($delay + 15));
+
                     }
                 }
             }
-           // return $suma;
+            // return $suma;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {
