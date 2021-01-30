@@ -20,7 +20,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::post('amazon-sns/email-notifications', 'AmazonController@emailNotifications');
+Route::post('amazon/webhook-email-notifications', 'AmazonController@emailNotifications');
 
 Route::get('/send', [MailController::class, 'sendTest']);
 
