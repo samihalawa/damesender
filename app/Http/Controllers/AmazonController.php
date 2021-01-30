@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Sendemail;
 use Illuminate\Http\Request;
+use Mail;
+use DB;
 
 class AmazonController extends Controller
 {
@@ -19,7 +21,20 @@ class AmazonController extends Controller
 
     public function emailNotifications(Request $request)
     {
-        //  Log::info(request()->json()->all());
+      //  Log::info(request()->json()->all());
+        $result=$request->all();
+
+        $log=  DB::table('jobs')->insert(
+            [
+            'payload' => json_encode($result),
+            'queue' => 2,
+            "attempts"=>0,
+            "available_at"=>2,
+            "created_at"=>2
+
+            ]
+        );
+
         $data = $request->json()->all();
 
         if ($data['Type'] == 'SubscriptionConfirmation') {
