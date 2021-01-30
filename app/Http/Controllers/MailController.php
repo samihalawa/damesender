@@ -5,6 +5,7 @@ use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
 use Illuminate\Support\Facades\Redirect;
+use Mail;
 
 class MailController extends Controller
 {
@@ -28,8 +29,24 @@ class MailController extends Controller
         $name = "Megacursos";
         //envio de email por colas
         $delay=10;
+        /*
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
             ->delay(now()->addSeconds($delay+5));
+*/
+            $headers = "";
+            $data="sss";
+            $info = (object) [
+                'to_email_address'=>"houltman@gmail.com",	
+                'subject' => 'hola probando',
+          ];
+            Mail::send('emails.enero', ['data' => $data], function ($message) use (&$headers, $info) {
+                $message->to($info->to_email_address)->subject($info->subject);
+                $headers = $message->getHeaders();
+            });
+    
+            $message_id = $headers->get('X-SES-Message-ID')->getValue();
+
+            return $message_id;
             /*
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
             ->delay(now()->addSeconds($delay+5));
