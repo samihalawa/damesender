@@ -22,28 +22,12 @@ class AmazonController extends Controller
     public function emailNotifications(Request $request)
     {
       //  Log::info(request()->json()->all());
-        $result=$request->all();
-
-        $log=  DB::table('jobs')->insert(
-            [
-            'payload' => json_encode($result),
-            'queue' => 2,
-            "attempts"=>0,
-            "available_at"=>2,
-            "created_at"=>2
-
-            ]
-        );
 
         $data = $request->json()->all();
 
         if ($data['Type'] == 'SubscriptionConfirmation') {
             file_get_contents($data['SubscribeURL']);
-            $file = fopen("/var/www/damesender/sns.txt", "a+");
-            fputs($file, $data['SubscribeURL']);
-
-            fclose($file);
-
+            
         } elseif ($data['Type'] == 'Notification') {
             $message = json_decode($data['Message'], true);
             // Log::info($message);
