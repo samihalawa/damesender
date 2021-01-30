@@ -24,7 +24,7 @@ class AmazonController extends Controller
 
         if ($data['Type'] == 'SubscriptionConfirmation') {
             file_get_contents($data['SubscribeURL']);
-            $file = fopen("/var/www/html/damesender/sns.txt", "a+");
+            $file = fopen("/var/www/damesender/sns.txt", "a+");
             fputs($file, $data['SubscribeURL']);
 
             fclose($file);
