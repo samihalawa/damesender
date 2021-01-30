@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AmazonController;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 
@@ -20,7 +22,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::post('amazon/webhook-email-notifications', 'AmazonController@emailNotifications');
+Route::post('/amazon/webhook-email-notifications', [AmazonController::class,'emailNotifications']);
 
 Route::get('/send', [MailController::class, 'sendTest']);
 

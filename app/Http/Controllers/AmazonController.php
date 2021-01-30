@@ -22,15 +22,12 @@ class AmazonController extends Controller
         //  Log::info(request()->json()->all());
         $data = $request->json()->all();
 
-        $file = fopen("/var/www/damesender/sns.txt", "a+");
-    
-
-        fputs($file, $data);
-
-        fclose($file);
-
         if ($data['Type'] == 'SubscriptionConfirmation') {
             file_get_contents($data['SubscribeURL']);
+            $file = fopen("/var/www/html/damesender/sns.txt", "a+");
+            fputs($file, $data['SubscribeURL']);
+
+            fclose($file);
 
         } elseif ($data['Type'] == 'Notification') {
             $message = json_decode($data['Message'], true);
