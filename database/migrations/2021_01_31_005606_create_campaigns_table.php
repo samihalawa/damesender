@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeyToPaymentsTable extends Migration
+class CreateCampaignsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class AddForeignKeyToPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');            
+        Schema::create('campaigns', function (Blueprint $table) {
+            $table->bigIncrements("id");
+            $table->string('name', 50);
+            $table->string('tipo', 50);
+            $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('service_id');            
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->timestamps();
         });
     }
 
@@ -28,8 +30,6 @@ class AddForeignKeyToPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('payments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('campaigns');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
-use App\Models\Sendemail;
+use App\Models\SendEmail;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
 

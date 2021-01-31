@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sendemail;
+use App\Models\SendEmail;
 use Illuminate\Http\Request;
 use Mail;
 use DB;
@@ -38,7 +38,7 @@ class AmazonController extends Controller
             switch ($message['eventType']) {
                 case 'Bounce':
                     $bounce = $message['bounce'];
-                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->bounced = true;
                     $email->save();
                     // foreach ($bounce['bouncedRecipients'] as $bouncedRecipient){
@@ -51,7 +51,7 @@ class AmazonController extends Controller
                     break;
                 case 'Complaint':
                     $complaint = $message['complaint'];
-                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->complaint = true;
                     $email->save();
                     // foreach($complaint['complainedRecipients'] as $complainedRecipient){
@@ -64,13 +64,13 @@ class AmazonController extends Controller
                     break;
                 case 'Open':
                     $open = $message['open'];
-                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->opened = true;
                     $email->save();
                     break;
                 case 'Delivery':
                     $delivery = $message['delivery'];
-                    $email = Sendemail::where('aws_message_id', $message_id)->first();
+                    $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->delivered = true;
                     $email->save();
                     break;
