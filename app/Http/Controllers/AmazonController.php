@@ -41,6 +41,13 @@ class AmazonController extends Controller
                     $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->bounced = true;
                     $email->save();
+                    $log=  DB::table('logs')->insert(
+                        [
+                        'name' => "Bounce",
+                        'create_at'=>date("Y-m-d h:i:s"),
+                        ]
+                    );
+                    
                     // foreach ($bounce['bouncedRecipients'] as $bouncedRecipient){
                     //     $emailAddress = $bouncedRecipient['emailAddress'];
                     //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Bounce']);
@@ -67,12 +74,25 @@ class AmazonController extends Controller
                     $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->opened = true;
                     $email->save();
+                    $log=  DB::table('logs')->insert(
+                        [
+                        'name' => "open",
+                        'create_at'=>date("Y-m-d h:i:s"),
+                        ]
+                    );
+
                     break;
                 case 'Delivery':
                     $delivery = $message['delivery'];
                     $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->delivered = true;
                     $email->save();
+                    $log=  DB::table('logs')->insert(
+                        [
+                        'name' => "Delivery",
+                        'create_at'=>date("Y-m-d h:i:s"),
+                        ]
+                    );
                     break;
                 default:
                     // Do Nothing
