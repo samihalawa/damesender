@@ -30,10 +30,11 @@ class MailController extends Controller
         $name = "Megacursos";
         //envio de email por colas
         $delay = 10;
-        /*
+        
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
-         */
+         return "Ok";
+        /*
         $headers = "";
         $data = "sss";
         $info = (object) [
@@ -59,11 +60,11 @@ class MailController extends Controller
            // return redirect('/sent_emails')->with('success', 'Email Sent');
         }
 
-        return $message_id;
-        /*
+        return $message_id;*/
+        
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
-         */
+         
         return "ok";
 
     }
