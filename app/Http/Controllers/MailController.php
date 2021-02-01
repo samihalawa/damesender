@@ -7,6 +7,7 @@ use App\Jobs\ProcessEmail;
 use App\Models\SendEmail;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
+use DB;
 
 class MailController extends Controller
 {
