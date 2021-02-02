@@ -8,7 +8,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Mail\Mailer;
+//use Illuminate\Contracts\Bus\SelfHandling;
 use App\Mail\Notification;
+
 
 class ProcessNotification implements ShouldQueue
 {
@@ -47,4 +50,5 @@ class ProcessNotification implements ShouldQueue
         Mail::to($this->email,$this->user)
         ->send(new Notification($this->subject,$this->body,$this->from,$this->name));
     }
+
 }
