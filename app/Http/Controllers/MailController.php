@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
+use App\Jobs\ProcessNotification;
 use App\Models\SendEmail;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
@@ -32,9 +33,15 @@ class MailController extends Controller
         //envio de email por colas
         $delay = 10;
 
-        
+        /*
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
+        */
+
+        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+        ->delay(now()->addSeconds($delay+5));
+
+        
          return "Ok";
         /*
         $headers = "";
