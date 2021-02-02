@@ -104,7 +104,7 @@ class MailController extends Controller
         $contacts = array_map('str_getcsv', file($filePath));
 
         // $suma=0;
-        $delay = 10;
+        $delay = 30;
 
         if ($contacts) {
 
@@ -115,15 +115,13 @@ class MailController extends Controller
 
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                    // $email = $contact[4];
-                    // echo $email;
                     if ($contact[4] != " ") {
                         $delay + 5;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
                         //procesamient de emails por colas
                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                            ->delay(now()->addSeconds($delay + 15));
+                            ->delay(now()->addSeconds($delay + 40));
 
                     }
                 }
