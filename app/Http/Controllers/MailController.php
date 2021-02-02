@@ -32,13 +32,6 @@ class MailController extends Controller
         //envio de email por colas
         $delay = 10;
 
-        $log=  DB::table('logs')->insert(
-            [
-            'name' => "open",
-            'create_at'=>date("Y-m-d h:i:s"),
-            ]
-        );
-        return "ok";
         
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
