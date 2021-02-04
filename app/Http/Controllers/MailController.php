@@ -122,20 +122,20 @@ class MailController extends Controller
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     if ($contact[4] != " ") {
-                        $delay + 5;
+                        $delay=$delay + 0.09;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
-                        $sum++;
+                        //$sum++;
+                        // echo now()->addSeconds($delay)."<br>";
                         //procesamient de emails por colas
-                        /*
+                        
                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                            ->delay(now()->addSeconds($delay + 40));
-                            */
-
+                            ->delay(now()->addSeconds($delay));
+                          
                     }
                 }
             }
-             return $sum;
+            // return $delay;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {
