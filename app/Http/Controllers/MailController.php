@@ -127,10 +127,10 @@ class MailController extends Controller
                         $user = $contact[0] . " " . $contact[1];
                         $sum++;
                         //procesamient de emails por colas
-                        /*
+                        
                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
                             ->delay(now()->addSeconds($delay + 40));
-                            */
+                            
 
                     }
                 }
