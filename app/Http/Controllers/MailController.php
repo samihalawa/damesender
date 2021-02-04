@@ -102,9 +102,9 @@ class MailController extends Controller
     {
 
         //$filePath = $request->file('recipients')->getRealPath();
-        $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo
+       // $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo
 
-        $filePath="/var/www/html/damesender/info.csv";//archivo fijo
+        $filePath="/var/www/damesender/info.csv";//archivo fijo
 
        // megacursos_CONTACT_20212.csv
 
