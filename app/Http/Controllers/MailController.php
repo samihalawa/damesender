@@ -102,9 +102,9 @@ class MailController extends Controller
     {
 
         //$filePath = $request->file('recipients')->getRealPath();
-       // $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo
+        $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
 
-        $filePath="/var/www/damesender/info.csv";//archivo fijo
+       // $filePath="/var/www/damesender/info.csv";//archivo fijo
 
        // megacursos_CONTACT_20212.csv
 
@@ -127,10 +127,10 @@ class MailController extends Controller
                         $user = $contact[0] . " " . $contact[1];
                         $sum++;
                         //procesamient de emails por colas
-                        
+                        /*
                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
                             ->delay(now()->addSeconds($delay + 40));
-                            
+                            */
 
                     }
                 }
