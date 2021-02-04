@@ -100,17 +100,13 @@ class MailController extends Controller
 
     public function store(MailRequest $request)
     {
-
-        //$filePath = $request->file('recipients')->getRealPath();
-        $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
-
+        $filePath = $request->file('recipients')->getRealPath();
+       // $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
        // $filePath="/var/www/damesender/info.csv";//archivo fijo
-
        // megacursos_CONTACT_20212.csv
-
         $contacts = array_map('str_getcsv', file($filePath));
 
-        $delay = 30;
+        $delay = 10;
 
         if ($contacts) {
 
