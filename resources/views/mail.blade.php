@@ -59,7 +59,7 @@
 					<div class="tab-pane active pt-4" id="tabs-1" role="tabpanel">
 						<div class="form-group">
 							<label for="recipients">Select a list of recipients (CSV):</label>
-							<input type="file" class="form-control-file" name="recipients" id="recipients" required>
+							
 						</div>
 					</div>
 					<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">

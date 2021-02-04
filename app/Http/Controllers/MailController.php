@@ -101,12 +101,15 @@ class MailController extends Controller
     public function store(MailRequest $request)
     {
 
-        $filePath = $request->file('recipients')->getRealPath();
-        // $filePath="/var/www/damesender/megacursos_CONTACT.csv";archivo fijo
+        //$filePath = $request->file('recipients')->getRealPath();
+        $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo
+
+        $filePath="/var/www/html/damesender/info.csv";//archivo fijo
+
+       // megacursos_CONTACT_20212.csv
 
         $contacts = array_map('str_getcsv', file($filePath));
 
-        // $suma=0;
         $delay = 30;
 
         if ($contacts) {
@@ -115,21 +118,24 @@ class MailController extends Controller
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
-
+            $sum=1;
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     if ($contact[4] != " ") {
                         $delay + 5;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
+                        $sum++;
                         //procesamient de emails por colas
+                        /*
                         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
                             ->delay(now()->addSeconds($delay + 40));
+                            */
 
                     }
                 }
             }
-            // return $suma;
+             return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {

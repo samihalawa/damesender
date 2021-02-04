@@ -105,6 +105,7 @@ $(document).ready(function(){
 
     $('#send-mail').on('click', function(event) {
         if ($('#recipients').val() === '' || $('#recipients').val() === undefined) {
+            /*
             $('#recipient-error').html(
                 `<div class="alert alert-warning alert-dismissible fade show" role="alert">
                     The recipient list is mandatory.
@@ -113,7 +114,8 @@ $(document).ready(function(){
                     </button>
                 </div>`
             );
-            event.preventDefault();
+            */
+            //event.preventDefault();
         }
     });
  });

@@ -24,7 +24,7 @@ class MailRequest extends FormRequest
     public function rules()
     {
             return [
-                'recipients' => 'required|file|mimes:csv,txt|max:32768',
+               // 'recipients' => 'required|file|mimes:csv,txt|max:32768',
             ];
     }
 }
