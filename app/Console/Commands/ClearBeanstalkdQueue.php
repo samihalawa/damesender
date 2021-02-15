@@ -49,7 +49,7 @@ class ClearBeanstalkdQueue extends Command
     {
         //$queue = ($this->argument('queue')) ? $this->argument('queue') : Config::get('queue.connections.beanstalkd.queue');
         $queue="default";
-		$this->info(sprintf('Clearing queue: %s', $queue));
+		$this->info(sprintf('Clearing queueuequeue: %s', $queue));
 
 		$pheanstalk = Queue::getPheanstalk();
 		$pheanstalk->useTube($queue);
