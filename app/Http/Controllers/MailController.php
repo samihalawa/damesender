@@ -9,6 +9,9 @@ use App\Models\SendEmail;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
 use DB;
+use Validator;
+//use Illuminate\Support\HtmlString;
+//['html' => new HtmlString($html)
 
 class MailController extends Controller
 {
@@ -24,6 +27,13 @@ class MailController extends Controller
     public function sendTest()
     {
 
+
+        $validator = Validator::make(['email' => 'houltman@gmail.com'], [
+            'email' => 'required|email',
+        ]);
+        
+        dd($validator->fails()); 
+
         $email = "houltman@gmail.com";
         $user = "Gabriel Houltman";
         $subject = "Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
@@ -31,21 +41,23 @@ class MailController extends Controller
         $from = "atencion@megacursos.com";
         $name = "Megacursos";
         //envio de email por colas
-        $delay = 10;
+        $delay = 5;
+        $campaing="Febrero 2021";
 
        
-        ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)
-        ->delay(now()->addSeconds($delay+5));
+        ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)->delay(now()->addSeconds($delay));
 
         return now();
         return "Ok";
         
-/*
+        
+
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
 
         
          return "Ok";
+
         /*
         $headers = "";
         $data = "sss";
@@ -68,11 +80,13 @@ class MailController extends Controller
             $sentEmail->subject = $info->subject;
             $sentEmail->message = $mensxx;
             $sentEmail->aws_message_id = $message_id;
+            $sentEmail->campaing_id=1;
             $sentEmail->save();
            // return redirect('/sent_emails')->with('success', 'Email Sent');
         }
+        */
 
-        return $message_id;*/
+        return $message_id;
         
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
         ->delay(now()->addSeconds($delay+5));
@@ -101,7 +115,15 @@ class MailController extends Controller
     public function store(MailRequest $request)
     {
         $filePath = $request->file('recipients')->getRealPath();
-       // $filePath="/var/www/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
+        /*
+        $file = $request->recipients;
+        $extension = $file->getClientOriginalExtension(); // getting image extension
+        $filename = time() . '.' . $extension;
+        $file->move('uploads/comprobante/', $filename);
+        sleep(2);
+        */
+       // $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
+       // $filePath="http://localhost:8000/uploads/comprobante/".$filename;
        // $filePath="/var/www/damesender/info.csv";//archivo fijo
        // megacursos_CONTACT_20212.csv
         $contacts = array_map('str_getcsv', file($filePath));
@@ -121,17 +143,19 @@ class MailController extends Controller
                         $delay=$delay + 0.09;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
-                        //$sum++;
-                        // echo now()->addSeconds($delay)."<br>";
-                        //procesamient de emails por colas
+                        $validator = Validator::make(['email' => $email], [
+                            'email' => 'required|email',
+                        ]);
                         
-                        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+                        if(!$validator->fails()){
+                          ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
                             ->delay(now()->addSeconds($delay));
-                          
+                          $sum++;
+                        }
                     }
                 }
             }
-            // return $delay;
+           // return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
 
         } else {

@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Mail\OrderPromocion;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderPromocion;
 
 class ProcessEmail implements ShouldQueue
 {
@@ -27,7 +26,7 @@ class ProcessEmail implements ShouldQueue
      * @return void
      */
 
-    public function __construct($subject, $body,$email,$from,$name,$user)
+    public function __construct($subject,$body,$email,$from,$name,$user)
     {
         $this->subject = $subject;
         $this->body = $body;
