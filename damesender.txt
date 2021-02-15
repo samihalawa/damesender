@@ -1,0 +1,19 @@
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/damesender/artisan queue:work beanstalkd --sleep=3 --tries=2 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=forge
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/www/damesender/worker.log
+stopwaitsecs=3600
+
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'Damesender.2021@/';
+
+CREATE USER 'damesender'@'localhost' IDENTIFIED BY 'Damesender.2021@/';
+
+GRANT ALL PRIVILEGES ON *.* TO 'damesender'@'localhost' WITH GRANT OPTION;
