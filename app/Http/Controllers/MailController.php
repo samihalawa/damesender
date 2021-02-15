@@ -32,7 +32,7 @@ class MailController extends Controller
             'email' => 'required|email',
         ]);
         
-        dd($validator->fails()); 
+       // dd($validator->fails()); 
 
         $email = "houltman@gmail.com";
         $user = "Gabriel Houltman";
@@ -44,11 +44,14 @@ class MailController extends Controller
         $delay = 5;
         $campaing="Febrero 2021";
 
-       
-        ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)->delay(now()->addSeconds($delay));
-
+        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+        ->delay(now()->addSeconds($delay+5));
         return now();
         return "Ok";
+
+        ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)->delay(now()->addSeconds($delay));
+
+       
         
         
 
@@ -140,7 +143,7 @@ class MailController extends Controller
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     if ($contact[4] != " ") {
-                        $delay=$delay + 0.09;
+                        $delay=$delay + 0.20;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
                         $validator = Validator::make(['email' => $email], [
@@ -156,7 +159,7 @@ class MailController extends Controller
                 }
             }
            // return $sum;
-            return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfacorio!");
+            return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
 
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
