@@ -143,7 +143,7 @@ class MailController extends Controller
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     if ($contact[4] != " ") {
-                        $delay=$delay + 0.20;
+                        $delay=$delay + 0.30;
                         $email = $contact[4];
                         $user = $contact[0] . " " . $contact[1];
                         $validator = Validator::make(['email' => $email], [
