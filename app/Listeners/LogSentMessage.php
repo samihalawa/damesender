@@ -25,6 +25,7 @@ class LogSentMessage
      */
     public function handle($event)
     {
+        /*
         Log::info('MESSAGE ID: ' . $event->message->getId());
 
         $sesMessageId = $event->message
@@ -35,7 +36,7 @@ class LogSentMessage
                 'name' => "send" . $sesMessageId,
                 'create_at' => date("Y-m-d h:i:s"),
             ]
-        );
+        );*/
 
     }
 }
