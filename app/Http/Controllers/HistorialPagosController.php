@@ -12,6 +12,7 @@ class HistorialPagosController extends Controller
   
 
     public function index(){
+        /*
         $id =Auth::user()->id;
         if(Auth::user()->type == 'Cliente'){
             $historial = DB::table('users')
@@ -27,8 +28,8 @@ class HistorialPagosController extends Controller
             ->select('users.name as nombreUsuario','users.phone','users.email','payments.quantity',
             'method_of_payment as MethodsOfPayments','services.name','requested_amount')
             ->where('gift_service','0')->get();
-        }
-        
+        }*/
+        $historial=[];
 
         return view("historial_payment",compact('historial'));
     }
