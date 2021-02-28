@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
-use App\Models\SendEmail;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
-use Mail;
-use DB;
 use Validator;
+
 //use Illuminate\Support\HtmlString;
 //['html' => new HtmlString($html)
 
@@ -27,12 +26,16 @@ class MailController extends Controller
     public function sendTest()
     {
 
+        // $crm = new CrmAgile();
+        //  $response = $crm->contacts();
+
+         dd($response);
 
         $validator = Validator::make(['email' => 'houltman@gmail.com'], [
             'email' => 'required|email',
         ]);
-        
-       // dd($validator->fails()); 
+
+        // dd($validator->fails());
 
         $email = "houltman@gmail.com";
         $user = "Gabriel Houltman";
@@ -42,58 +45,51 @@ class MailController extends Controller
         $name = "Megacursos";
         //envio de email por colas
         $delay = 5;
-        $campaing="Febrero 2021";
+        $campaing = "Febrero 2021";
 
-        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-        ->delay(now()->addSeconds($delay+5));
-        return now();
-        return "Ok";
 
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)->delay(now()->addSeconds($delay));
 
-       
-        
-        
+        return "ok";
 
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-        ->delay(now()->addSeconds($delay+5));
+            ->delay(now()->addSeconds($delay + 5));
 
-        
-         return "Ok";
+        return "Ok";
 
         /*
         $headers = "";
         $data = "sss";
         $info = (object) [
-            'to_email_address' => "houltman@gmail.com",
-            'subject' => 'hola probando ses notificacion',
+        'to_email_address' => "houltman@gmail.com",
+        'subject' => 'hola probando ses notificacion',
         ];
         $mensxx="probando";
         Mail::send('emails.enero', ['data' => $data], function ($message) use (&$headers, $info) {
-            $message->to($info->to_email_address)->subject($info->subject);
-            $headers = $message->getHeaders();
+        $message->to($info->to_email_address)->subject($info->subject);
+        $headers = $message->getHeaders();
         });
 
         $message_id = $headers->get('X-SES-Message-ID')->getValue();
 
         // Log::info($message_id);
         if ($message_id) {
-            $sentEmail = new Sendemail;
-            $sentEmail->to_email_address = $info->to_email_address;
-            $sentEmail->subject = $info->subject;
-            $sentEmail->message = $mensxx;
-            $sentEmail->aws_message_id = $message_id;
-            $sentEmail->campaing_id=1;
-            $sentEmail->save();
-           // return redirect('/sent_emails')->with('success', 'Email Sent');
+        $sentEmail = new Sendemail;
+        $sentEmail->to_email_address = $info->to_email_address;
+        $sentEmail->subject = $info->subject;
+        $sentEmail->message = $mensxx;
+        $sentEmail->aws_message_id = $message_id;
+        $sentEmail->campaing_id=1;
+        $sentEmail->save();
+        // return redirect('/sent_emails')->with('success', 'Email Sent');
         }
-        */
+         */
 
         return $message_id;
-        
+
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-        ->delay(now()->addSeconds($delay+5));
-         
+            ->delay(now()->addSeconds($delay + 5));
+
         return "ok";
 
     }
@@ -118,17 +114,6 @@ class MailController extends Controller
     public function store(MailRequest $request)
     {
         $filePath = $request->file('recipients')->getRealPath();
-        /*
-        $file = $request->recipients;
-        $extension = $file->getClientOriginalExtension(); // getting image extension
-        $filename = time() . '.' . $extension;
-        $file->move('uploads/comprobante/', $filename);
-        sleep(2);
-        */
-       // $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
-       // $filePath="http://localhost:8000/uploads/comprobante/".$filename;
-       // $filePath="/var/www/damesender/info.csv";//archivo fijo
-       // megacursos_CONTACT_20212.csv
         $contacts = array_map('str_getcsv', file($filePath));
 
         $delay = 10;
@@ -139,30 +124,50 @@ class MailController extends Controller
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
-            $sum=1;
+            $sum = 1;
+            
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
-                    if ($contact[4] != " ") {
-                        $delay=$delay + 0.30;
-                        $email = $contact[4];
-                        $user = $contact[0] . " " . $contact[1];
-                        $validator = Validator::make(['email' => $email], [
-                            'email' => 'required|email',
-                        ]);
-                        
-                        if(!$validator->fails()){
-                          ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                            ->delay(now()->addSeconds($delay));
-                          $sum++;
+                    try {
+                        if ($contact[4]) {
+                            $delay = $delay + 0.30;
+                            $email = $contact[4];
+                            $user = $contact[0] . " " . $contact[1];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+
+                            if (!$validator->fails()) {
+                                echo $email . "<br>";
+                                // ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
+                                // ->delay(now()->addSeconds($delay));
+                                $sum++;
+
+                            }
                         }
+                    } catch (Exception $e) {
+                        //capturar error
+
                     }
                 }
             }
-           // return $sum;
+            return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
 
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
         }
     }
+
+            /*
+        $file = $request->recipients;
+        $extension = $file->getClientOriginalExtension(); // getting image extension
+        $filename = time() . '.' . $extension;
+        $file->move('uploads/comprobante/', $filename);
+        sleep(2);
+         */
+        // $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
+        // $filePath="http://localhost:8000/uploads/comprobante/".$filename;
+        // $filePath="/var/www/damesender/info.csv";//archivo fijo
+        // megacursos_CONTACT_20212.csv
 }
