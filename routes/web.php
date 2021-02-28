@@ -7,6 +7,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmazonController;
+use App\Http\Controllers\CampaingController;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -25,7 +26,7 @@ use App\Http\Controllers\HomeController;
 Route::post('/amazon/webhook-email-notifications', [AmazonController::class,'emailNotifications']);
 
 Route::get('/send', [MailController::class, 'sendTest']);
-
+Route::resource('/campaing', CampaingController::class);
 
 Route::resource('/historial', HistorialPagosController::class);
 Route::resource('/count', CountSMSAndEmailsController::class );
@@ -33,6 +34,9 @@ Route::get('/email', [MailController::class, 'index']);
 Route::resource('/mail', MailController::class);
 Route::resource('/sms', SMSController::class);
 Route::resource('/users', UserController::class);
+
+
+
 
 Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
