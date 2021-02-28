@@ -152,6 +152,11 @@
 							<span class="nav-text">Free SMS & Emails</span>
 						</a>
 					</li>  
+                    <li class="{{ Request::is('/campaing') ? 'mm-active' : '' }}"><a href="{{ url('/campaing') }}" class="ai-icon" aria-expanded="false">
+                        <i class="flaticon-381-gift"></i>
+                        <span class="nav-text">Campaing</span>
+                    </a>
+                </li> 
                 </ul>
             </div>
             

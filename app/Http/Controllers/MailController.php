@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
+use App\Models\Campaign;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
@@ -120,12 +122,20 @@ class MailController extends Controller
 
         if ($contacts) {
 
+            $campaing = new Campaign;
+                $campaing->name = $request->campaing."-".date("Y-m-d h:i:s");
+                $campaing->tipo = "Email";
+                $campaing->user_id = Auth::user()->id;
+            $campaing->save();
+
+            //return $campaing->id;
+
             $body = ($request->type == 0 ? $request->content : $request->plain);
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
             $sum = 1;
-            
+
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
@@ -138,9 +148,8 @@ class MailController extends Controller
                             ]);
 
                             if (!$validator->fails()) {
-                                echo $email . "<br>";
-                                // ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
-                                // ->delay(now()->addSeconds($delay));
+                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id)
+                                 ->delay(now()->addSeconds($delay));
                                 $sum++;
 
                             }
@@ -151,7 +160,7 @@ class MailController extends Controller
                     }
                 }
             }
-            return $sum;
+            //return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
 
         } else {
