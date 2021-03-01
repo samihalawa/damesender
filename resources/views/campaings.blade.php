@@ -12,6 +12,7 @@
                 <th>Send</th>
                 <th>Delivered </th>
                 <th>Open</th>
+                <th>bounced </th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,8 @@
                 <th style="color:black" >{{ $campaing->sends->count() }}</th>
                 <th style="color:black" >{{ $campaing->sends->where('delivered ', 1)->count() }}</th>
                 <th style="color:black" >{{ $campaing->sends->where('open ', 1)->count() }}</th>
+                <th style="color:black" >{{ $campaing->sends->where('bounced ', 1)->count() }}</th>
+                 
             </tr>
             @empty
             <h1>No hay registros</h1>
@@ -32,6 +35,7 @@
                 <th>Send</th>
                 <th>Delibery</th>
                 <th>Open</th>
+                <th>Bounced</th>
 
             </tr>
         </tfoot>
