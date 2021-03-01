@@ -21,7 +21,7 @@
                 <th style="color:black" >{{ $campaing->name }}</th>
                 <th style="color:black" >{{ $campaing->sends->count() }}</th>
                 <th style="color:black" >{{ $campaing->sends->where('delivered ', 1)->count() }}</th>
-                <th style="color:black" >{{ $campaing->sends->where('open ', 1)->count() }}</th>
+                <th style="color:black" >{{ $campaing->sends->where('opened', 1)->count() }}</th>
                 <th style="color:black" >{{ $campaing->sends->where('bounced ', 1)->count() }}</th>
                  
             </tr>
