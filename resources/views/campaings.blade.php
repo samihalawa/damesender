@@ -10,7 +10,7 @@
             <tr>
                 <th>Campaña</th>
                 <th>Send</th>
-                <th>Delibery</th>
+                <th>Delivered </th>
                 <th>Open</th>
             </tr>
         </thead>
@@ -19,8 +19,8 @@
             <tr>
                 <th style="color:black" >{{ $campaing->name }}</th>
                 <th style="color:black" >{{ $campaing->sends->count() }}</th>
-                <th style="color:black" ></th>
-                <th style="color:black" ></th>
+                <th style="color:black" >{{ $campaing->sends->where('delivered ', 1)->count() }}</th>
+                <th style="color:black" >{{ $campaing->sends->where('open ', 1)->count() }}</th>
             </tr>
             @empty
             <h1>No hay registros</h1>
