@@ -24,7 +24,7 @@ class CampaingController extends Controller
 
     public function index()
     {
-        $campaings=Campaign::paginate(10);
+        $campaings=Campaign::orderBy("id","desc")->paginate(1);
 
         //dd($campaings);
 
