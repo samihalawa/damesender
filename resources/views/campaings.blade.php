@@ -40,4 +40,6 @@
             </tr>
         </tfoot>
     </table>
+
+    {{ $campaings->links() }}
 @endsection
