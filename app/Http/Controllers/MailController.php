@@ -171,7 +171,8 @@ class MailController extends Controller
     }
 
     public function bounced(){
-        $bonced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
+        $bounced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
+        return $bounced;
         $crm = new CrmAgile();
         $info=array();
         foreach($bonced as $b){
