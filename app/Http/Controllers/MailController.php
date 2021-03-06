@@ -181,6 +181,10 @@ class MailController extends Controller
         }
         return $info;
     }
+    public function complaint(){
+        $complaint =SendEmail::where("complaint",1)->select("to_email_address","complaint ")->get();
+        return $complaint ;
+    }
 
             /*
         $file = $request->recipients;
