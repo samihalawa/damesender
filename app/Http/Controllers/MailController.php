@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\SendEmail;
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
@@ -140,7 +140,8 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.12;
+                            $delay = $delay + 0.10
+                            ;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
@@ -166,6 +167,10 @@ class MailController extends Controller
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
         }
+    }
+
+    public function bounced(){
+        return SendEmail::where("bounced",1)->get();
     }
 
             /*

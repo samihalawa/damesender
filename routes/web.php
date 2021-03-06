@@ -31,6 +31,7 @@ Route::resource('/campaing', CampaingController::class);
 Route::resource('/historial', HistorialPagosController::class);
 Route::resource('/count', CountSMSAndEmailsController::class );
 Route::get('/email', [MailController::class, 'index']);
+Route::get('/bounced', [MailController::class, 'bounced']);
 Route::resource('/mail', MailController::class);
 Route::resource('/sms', SMSController::class);
 Route::resource('/users', UserController::class);
