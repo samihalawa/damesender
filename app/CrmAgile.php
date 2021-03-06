@@ -48,6 +48,12 @@ class CrmAgile extends Connection
         $result = $this->curl_wrap("contacts/search/email/" . $user->email, null, "GET", "application/json");
         return json_decode($result);
     }
+    public function searchPerson($email)
+    {
+        // return $this->makeRequest("contacts/search/email/" . $user->email, null, "GET", "application/json");
+        $result = $this->curl_wrap("contacts/search/email/" . $email, null, "GET", "application/json");
+        return json_decode($result);
+    }
 
     public function create(User $user, $tags)
     {

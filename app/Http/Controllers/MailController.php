@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
+use App\CrmAgile;
 
 //use Illuminate\Support\HtmlString;
 //['html' => new HtmlString($html)
@@ -170,7 +171,14 @@ class MailController extends Controller
     }
 
     public function bounced(){
-        return SendEmail::where("bounced",1)->get();
+        $bonced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
+        $crm = new CrmAgile();
+        $info=array();
+        foreach($bonced as $b){
+          $info[]=  $crm->searchPerson($b->to_email_address);
+        //  $response = $crm->contacts();
+        }
+        return $info;
     }
 
             /*
