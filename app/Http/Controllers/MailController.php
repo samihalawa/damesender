@@ -29,10 +29,15 @@ class MailController extends Controller
     public function sendTest()
     {
 
-        // $crm = new CrmAgile();
-        //  $response = $crm->contacts();
+         $crm = new CrmAgile();
+         //$response = $crm->contacts();
+         $response = $crm->searchPerson("sergioluque567@gmail.com");
 
-         dd($response);
+        return $response;
+
+         $deleta = $crm->deletePerson($response->id);
+
+         dd($deleta);
 
         $validator = Validator::make(['email' => 'houltman@gmail.com'], [
             'email' => 'required|email',

@@ -176,6 +176,14 @@ class CrmAgile extends Connection
 
         return false;
     }
+    public function deletePerson($id)
+    {
+        if (!is_null($id)) {
+            return $this->makeRequest("contacts/" . $id, null, "DELETE", "application/json");
+        }
+
+        return false;
+    }
 
     protected function properties(User $user)
     {
