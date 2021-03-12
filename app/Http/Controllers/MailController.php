@@ -5,6 +5,7 @@ use App\Models\SendEmail;
 use App\Http\Requests\MailRequest;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
+use App\Jobs\ClearAgile;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Auth;
 use Exception;
@@ -146,8 +147,7 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.10
-                            ;
+                            $delay = $delay + 0.10;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
@@ -177,12 +177,14 @@ class MailController extends Controller
 
     public function bounced(){
         $bounced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
-        return $bounced;
-        $crm = new CrmAgile();
-        $info=array();
-        foreach($bonced as $b){
-          $info[]=  $crm->searchPerson($b->to_email_address);
-        //  $response = $crm->contacts();
+
+        $delay=60;
+        $suma=7;
+        foreach($bounced as $b){
+          $info[]= $b->to_email_address;
+            $delay=$delay+$suma;
+            ClearAgile::dispatch($b->to_email_address)->delay(now()->addSeconds($delay));
+            $suma=$suma+7;
         }
         return $info;
     }
@@ -191,15 +193,4 @@ class MailController extends Controller
         return $complaint ;
     }
 
-            /*
-        $file = $request->recipients;
-        $extension = $file->getClientOriginalExtension(); // getting image extension
-        $filename = time() . '.' . $extension;
-        $file->move('uploads/comprobante/', $filename);
-        sleep(2);
-         */
-        // $filePath="/var/www/html/damesender/megacursos_CONTACT_20212.csv";//archivo fijo contactos
-        // $filePath="http://localhost:8000/uploads/comprobante/".$filename;
-        // $filePath="/var/www/damesender/info.csv";//archivo fijo
-        // megacursos_CONTACT_20212.csv
 }
