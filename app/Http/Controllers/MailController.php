@@ -30,13 +30,15 @@ class MailController extends Controller
     public function sendTest()
     {
 
-      // ClearAgile::dispatch('wendy.varga15@hotmail.com')->delay(now()->addSeconds(2));
-       // return "ok";
+       ClearAgile::dispatch('kndasdnasdk@gmail.com')->delay(now()->addSeconds(2));
+        //return "ok";
          $crm = new CrmAgile();
          //$response = $crm->contacts();
          $response = $crm->searchPerson("kndasdnasdk@gmail.com");
 
          if($response){
+             //return $response->id;
+            // $deleta = $crm->deletePerson($response->id);
             return json_encode($response);
          }
          return "no";
