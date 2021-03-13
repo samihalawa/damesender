@@ -38,7 +38,7 @@ class MailController extends Controller
 
          if($response){
              //return $response->id;
-            // $deleta = $crm->deletePerson($response->id);
+            $deleta = $crm->deletePerson($response->id);
             return json_encode($response);
          }
          return "no";
