@@ -30,13 +30,18 @@ class MailController extends Controller
     public function sendTest()
     {
 
-        ClearAgile::dispatch('houltman@hh.com')->delay(now()->addSeconds(2));
-        return "ok";
+       //ClearAgile::dispatch('jony25_7_91@hotmaill.com')->delay(now()->addSeconds(2));
+       // return "ok";
          $crm = new CrmAgile();
          //$response = $crm->contacts();
-         $response = $crm->searchPerson("sergioluque567@gmail.com");
+         $response = $crm->searchPerson("jony25_7_91@hotmaill.com");
 
-        return $response;
+         if($response){
+            return json_encode($response);
+         }
+         return "no";
+
+       
 
          $deleta = $crm->deletePerson($response->id);
 
@@ -180,13 +185,13 @@ class MailController extends Controller
     public function bounced(){
         $bounced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
 
-        $delay=60;
-        $suma=7;
+        $delay=40;
+        $suma=2;
         foreach($bounced as $b){
           $info[]= $b->to_email_address;
             $delay=$delay+$suma;
             ClearAgile::dispatch($b->to_email_address)->delay(now()->addSeconds($delay));
-            $suma=$suma+7;
+            $suma=$suma+1;
         }
         return $info;
     }

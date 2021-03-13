@@ -58,6 +58,7 @@ class ClearBeanstalkdQueue extends Command
 		while ($job = $pheanstalk->reserve(0)) {			
             $pheanstalk->delete($job);
            // $this->info(sprintf('Clearing : %s', $job));
+           $this->info(sprintf('delete'));
     
 		}
 
