@@ -20,9 +20,9 @@
             <tr>
                 <th style="color:black" >{{ $campaing->name }}</th>
                 <th style="color:black" >{{ General::getInfo($campaing->id) }}</th>
-                <th style="color:black" >{{-- $campaing->sends->where('delivered',1)->count() --}}</th>
-                <th style="color:black" >{{-- $campaing->sends->where('opened',1)->count() --}}</th>
-                <th style="color:black" >{{-- $campaing->sends->where('bounced',1)->count() --}}</th>
+                <th style="color:black" >{{General::getDeliveri($campaing->id) }} </th>
+                <th style="color:black" >{{General::getOpen($campaing->id) }}</th>
+                <th style="color:black" >{{General::getBounced($campaing->id) }}</th>
                  
             </tr>
             @empty
