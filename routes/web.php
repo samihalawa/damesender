@@ -8,7 +8,7 @@ use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmazonController;
 use App\Http\Controllers\CampaingController;
-
+use App\Http\Controllers\UnsuscribeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 
@@ -33,6 +33,7 @@ Route::resource('/count', CountSMSAndEmailsController::class );
 Route::get('/email', [MailController::class, 'index']);
 Route::get('/bounced', [MailController::class, 'bounced']);
 Route::get('/complaint', [MailController::class, 'complaint']);
+Route::get('/unsuscribe/campaing/{id}/{token}', [UnsuscribeController::class, 'unsuscribe']);
 Route::resource('/mail', MailController::class);
 Route::resource('/sms', SMSController::class);
 Route::resource('/users', UserController::class);
