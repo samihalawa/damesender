@@ -33,7 +33,7 @@ class UnsuscribeController extends Controller
     public function unsuscribe($campaing=null,$code=null){
 
         
-       $email=SendEmail::select("to_email_address")->where(['campaing_id'=>$campaing,"aws_message_id"=>$code])->first();
+       $email=SendEmail::select("to_email_address")->where(['campaing_id'=>$campaing,"hash"=>$code])->first();
 
        if($email){
 

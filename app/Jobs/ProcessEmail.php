@@ -8,11 +8,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+
 
 class ProcessEmail implements ShouldQueue
 {
-    
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $subject;
     protected $body;
@@ -21,6 +23,7 @@ class ProcessEmail implements ShouldQueue
     protected $name;
     protected $user;
     protected $campaing;
+    protected $nameEmail;
 
     /**
      * Create a new job instance.
@@ -28,7 +31,7 @@ class ProcessEmail implements ShouldQueue
      * @return void
      */
 
-    public function __construct($subject, $body, $email, $from, $name, $user, $campaing)
+    public function __construct($subject, $body, $email, $from, $name, $user, $campaing, $nameEmail)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -37,8 +40,10 @@ class ProcessEmail implements ShouldQueue
         $this->name = $name;
         $this->user = $user;
         $this->campaing = $campaing;
+        $this->nameEmail = $nameEmail;
 
     }
+
 
     /**
      * Execute the job.
@@ -57,19 +62,19 @@ class ProcessEmail implements ShouldQueue
             'body' => $this->body,
 
         ];
-        $mensxx = "probando";
+        $mensxx = "";
 
-        Mail::send(
-            [],
-            [],
-            function ($message) use (&$headers, $info) {
-                $message->to($info->to_email_address)
-                    ->subject($info->subject)
-                    ->from($info->infofrom, $info->infoname)
-                    ->setBody($info->body, 'text/html');
-                $headers = $message->getHeaders();
-            }
-        );
+        $hash = Hash::make($this->email);
+        
+        $hash= str_replace("/", "A", $hash);
+
+        $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
+
+        Mail::send("emails.".$this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
+            $message->to($info->to_email_address)->subject($info->subject);
+            $headers = $message->getHeaders();
+        });
+
         $message_id = $headers->get('X-SES-Message-ID')->getValue();
 
         if ($message_id) {
@@ -77,10 +82,36 @@ class ProcessEmail implements ShouldQueue
             $sentEmail->to_email_address = $info->to_email_address;
             $sentEmail->subject = $info->subject;
             $sentEmail->message = $mensxx;
+            $sentEmail->hash = $hash;
             $sentEmail->aws_message_id = $message_id;
             $sentEmail->campaing_id = $this->campaing;
             $sentEmail->save();
         }
+        /*
+        Mail::send(
+        [],
+        [],
+        function ($message) use (&$headers, $info) {
+        $message->to($info->to_email_address)
+        ->subject($info->subject)
+        ->from($info->infofrom, $info->infoname)
+        ->setBody($info->body, 'text/html');
+        $headers = $message->getHeaders();
+        }
+        );
+
+        $message_id = $headers->get('X-SES-Message-ID')->getValue();
+
+        if ($message_id) {
+        $sentEmail = new SendEmail;
+        $sentEmail->to_email_address = $info->to_email_address;
+        $sentEmail->subject = $info->subject;
+        $sentEmail->message = $mensxx;
+        $sentEmail->aws_message_id = $message_id;
+        $sentEmail->campaing_id = $this->campaing;
+        $sentEmail->save();
+        }
+         */
         /*
     Mail::to($this->email,$this->user)
     ->send(new OrderPromocion($this->subject,$this->body,$this->from,$this->name));

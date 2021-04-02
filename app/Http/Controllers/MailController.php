@@ -8,6 +8,7 @@ use App\Jobs\ProcessNotification;
 use App\Jobs\ClearAgile;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
@@ -29,6 +30,32 @@ class MailController extends Controller
 
     public function sendTest()
     {
+
+        $b=hash::make("admin");
+        $x= str_replace("/", "A", $b);
+
+        return $x;
+        $path = base_path();
+
+        //$path = base_path('vendor/bin');
+        $path = base_path('resources/views/email/aa.blade.php');
+
+        echo $path;
+        /*
+        $email=date("Y-m-d h:i:s");
+
+        $file = fopen("/var/www/html/damesender/resources/views/emails/".$email.".blade.php", "a+");
+
+
+        $texto="\n Route::get('/comprar-{criptp?}', [SeoController::class,'buy']);";
+
+        fputs($file, $texto);
+
+        fclose($file);
+        */
+
+        return "true";
+
 
        ClearAgile::dispatch('kndasdnasdk@gmail.com')->delay(now()->addSeconds(2));
         //return "ok";
@@ -83,6 +110,7 @@ class MailController extends Controller
         'subject' => 'hola probando ses notificacion',
         ];
         $mensxx="probando";
+
         Mail::send('emails.enero', ['data' => $data], function ($message) use (&$headers, $info) {
         $message->to($info->to_email_address)->subject($info->subject);
         $headers = $message->getHeaders();
@@ -138,15 +166,28 @@ class MailController extends Controller
 
         if ($contacts) {
 
+            $body = ($request->type == 0 ? $request->content : $request->plain);
+
+            $nameEmail=$request->campaing."-".date("Y-m-d h:i:s");
+
+          
+            $path = base_path('resources/views/emails/'.$nameEmail.'.blade.php');
+
+            $file = fopen($path, "a+");
+
+            fputs($file, $body);
+    
+            fclose($file);
+
             $campaing = new Campaign;
-                $campaing->name = $request->campaing."-".date("Y-m-d h:i:s");
+                $campaing->name =$nameEmail;
                 $campaing->tipo = "Email";
                 $campaing->user_id = Auth::user()->id;
             $campaing->save();
 
             //return $campaing->id;
 
-            $body = ($request->type == 0 ? $request->content : $request->plain);
+           
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
@@ -164,7 +205,7 @@ class MailController extends Controller
                             ]);
 
                             if (!$validator->fails()) {
-                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id)
+                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
                                  ->delay(now()->addSeconds($delay));
                                 $sum++;
 

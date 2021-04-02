@@ -19,6 +19,7 @@ class CreateSendEmailsTable extends Migration
             $table->string('subject', 150);
             $table->text('message');
             $table->text('aws_message_id');
+            $table->text('hash');
             $table->boolean('click')->default(false);
             $table->boolean('opened')->default(false);
             $table->boolean('delivered')->default(false);
