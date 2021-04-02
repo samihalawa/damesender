@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\SendEmail;
+
+use App\CrmAgile;
+
 class UnsuscribeController extends Controller
 {
     /**
@@ -11,9 +15,37 @@ class UnsuscribeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function deleteEmail($email)
     {
-        //
+       
+        $crm = new CrmAgile();
+         //$response = $crm->contacts();
+         $response = $crm->searchPerson($email);
+
+         if($response){
+             //return $response->id;
+            $deleta = $crm->deletePerson($response->id);
+            return json_encode($response);
+         }
+         return abort(404);
+    }
+
+    public function unsuscribe($campaing=null,$code=null){
+
+        
+       $email=SendEmail::select("to_email_address")->where(['campaing_id'=>$campaing,"aws_message_id"=>$code])->first();
+
+       if($email){
+
+          return view('unsuscribe', ['email' => $email]);
+
+       }else{
+
+        return abort(404);
+       }
+
+
+
     }
 
     /**

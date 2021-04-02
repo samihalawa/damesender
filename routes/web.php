@@ -34,6 +34,7 @@ Route::get('/email', [MailController::class, 'index']);
 Route::get('/bounced', [MailController::class, 'bounced']);
 Route::get('/complaint', [MailController::class, 'complaint']);
 Route::get('/unsuscribe/campaing/{id}/{token}', [UnsuscribeController::class, 'unsuscribe']);
+Route::get('/unsuscribe/email/{email}', [UnsuscribeController::class, 'deleteEmail']);
 Route::resource('/mail', MailController::class);
 Route::resource('/sms', SMSController::class);
 Route::resource('/users', UserController::class);
