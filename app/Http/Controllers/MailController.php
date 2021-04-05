@@ -31,16 +31,7 @@ class MailController extends Controller
     public function sendTest()
     {
 
-        $b=hash::make("admin");
-        $x= str_replace("/", "A", $b);
-
-        return $x;
-        $path = base_path();
-
-        //$path = base_path('vendor/bin');
-        $path = base_path('resources/views/email/aa.blade.php');
-
-        echo $path;
+        
         /*
         $email=date("Y-m-d h:i:s");
 

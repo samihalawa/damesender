@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SendEmail extends Model
 {
     use HasFactory;
-    protected $fillable = ['aws_message_id', 'to_email_address','campaing_id', 'subject', 'message', 'delivered', 'bounced', 'complaint', 'opened'];
+    protected $fillable = ['aws_message_id', 'to_email_address','campaing_id', 'subject', 'message', 'delivered', 'bounced', 'complaint', 'opened','unsuscribe'];
     protected $table="send_emails";
    
     public function campaing()
