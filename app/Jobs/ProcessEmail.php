@@ -73,7 +73,9 @@ class ProcessEmail implements ShouldQueue
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
 
         Mail::send("emails.".$this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
-            $message->to($info->to_email_address)->subject($info->subject);
+            $message->to($info->to_email_address)
+            ->from($info->infofrom, $info->infoname)
+            ->subject($info->subject);
             $headers = $message->getHeaders();
         });
 
