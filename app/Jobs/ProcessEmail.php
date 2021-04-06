@@ -68,6 +68,8 @@ class ProcessEmail implements ShouldQueue
         
         $hash= str_replace("/", "A", $hash);
 
+        $hash= str_replace("$", "S", $hash);
+
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
 
         Mail::send("emails.".$this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
