@@ -12,7 +12,8 @@
                 <th>Send</th>
                 <th>Delivered </th>
                 <th>Open</th>
-                <th>bounced </th>
+                <th>Bounced </th>
+                <th>Unsuscribe </th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
                 <th style="color:black" >{{General::getDeliveri($campaing->id) }} </th>
                 <th style="color:black" >{{General::getOpen($campaing->id) }}</th>
                 <th style="color:black" >{{General::getBounced($campaing->id) }}</th>
+                <th style="color:black" >{{General::getUnsuscribe($campaing->id) }}</th>
                  
             </tr>
             @empty

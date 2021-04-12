@@ -161,6 +161,10 @@ class MailController extends Controller
 
             $nameEmail=$request->campaing."-".date("Y-m-d h:i:s");
 
+            $nameEmail= str_replace(" ", "", $nameEmail);
+
+            $nameEmail= str_replace("/", "S", $nameEmail);
+
           
             $path = base_path('resources/views/emails/'.$nameEmail.'.blade.php');
 
@@ -188,7 +192,7 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.10;
+                            $delay = $delay + 0.20;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [

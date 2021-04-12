@@ -21,6 +21,12 @@ class General {
 		return DB::table('send_emails')->where(["campaing_id"=>$id,"bounced"=>1])->count();
 	}
 
+	public static function getUnsuscribe($id) {
+		return DB::table('send_emails')->where(["campaing_id"=>$id,"unsuscribe"=>1])->count();
+	}
+
+	
+
 
      
 }
