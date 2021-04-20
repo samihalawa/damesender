@@ -11,7 +11,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-
 class ProcessEmail implements ShouldQueue
 {
 
@@ -44,7 +43,6 @@ class ProcessEmail implements ShouldQueue
 
     }
 
-
     /**
      * Execute the job.
      *
@@ -65,60 +63,36 @@ class ProcessEmail implements ShouldQueue
         $mensxx = "";
 
         $hash = Hash::make($this->email);
-        
-        $hash= str_replace("/", "A", $hash);
 
-        $hash= str_replace("$", "S", $hash);
+        $hash = str_replace("/", "A", $hash);
+
+        $hash = str_replace("$", "S", $hash);
 
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
 
-        Mail::send("emails.".$this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
-            $message->to($info->to_email_address)
-            ->from($info->infofrom, $info->infoname)
-            ->subject($info->subject);
-            $headers = $message->getHeaders();
-        });
+        $unsuscribe = SendEmail::where(["to_email_address" => $this->email, "unsuscribe"=> 1])->first();
 
-        $message_id = $headers->get('X-SES-Message-ID')->getValue();
+        if (!$unsuscribe) {
+            Mail::send("emails." . $this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
+                $message->to($info->to_email_address)
+                    ->from($info->infofrom, $info->infoname)
+                    ->subject($info->subject);
+                $headers = $message->getHeaders();
+            });
 
-        if ($message_id) {
-            $sentEmail = new SendEmail;
-            $sentEmail->to_email_address = $info->to_email_address;
-            $sentEmail->subject = $info->subject;
-            $sentEmail->message = $mensxx;
-            $sentEmail->hash = $hash;
-            $sentEmail->aws_message_id = $message_id;
-            $sentEmail->campaing_id = $this->campaing;
-            $sentEmail->save();
+            $message_id = $headers->get('X-SES-Message-ID')->getValue();
+
+            if ($message_id) {
+                $sentEmail = new SendEmail;
+                $sentEmail->to_email_address = $info->to_email_address;
+                $sentEmail->subject = $info->subject;
+                $sentEmail->message = $mensxx;
+                $sentEmail->hash = $hash;
+                $sentEmail->aws_message_id = $message_id;
+                $sentEmail->campaing_id = $this->campaing;
+                $sentEmail->save();
+            }
+
         }
-        /*
-        Mail::send(
-        [],
-        [],
-        function ($message) use (&$headers, $info) {
-        $message->to($info->to_email_address)
-        ->subject($info->subject)
-        ->from($info->infofrom, $info->infoname)
-        ->setBody($info->body, 'text/html');
-        $headers = $message->getHeaders();
-        }
-        );
-
-        $message_id = $headers->get('X-SES-Message-ID')->getValue();
-
-        if ($message_id) {
-        $sentEmail = new SendEmail;
-        $sentEmail->to_email_address = $info->to_email_address;
-        $sentEmail->subject = $info->subject;
-        $sentEmail->message = $mensxx;
-        $sentEmail->aws_message_id = $message_id;
-        $sentEmail->campaing_id = $this->campaing;
-        $sentEmail->save();
-        }
-         */
-        /*
-    Mail::to($this->email,$this->user)
-    ->send(new OrderPromocion($this->subject,$this->body,$this->from,$this->name));
-     */
     }
 }
