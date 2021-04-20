@@ -153,7 +153,7 @@ class MailController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
         $contacts = array_map('str_getcsv', file($filePath));
 
-        $delay = 10;
+        $delay = 12;
 
         if ($contacts) {
 
