@@ -70,7 +70,14 @@ class ProcessEmail implements ShouldQueue
 
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
 
-        $unsuscribe = SendEmail::where(["to_email_address" => $this->email, "unsuscribe"=> 1])->first();
+        //$unsuscribe = SendEmail::where(["to_email_address" => $this->email, "unsuscribe"=> 1])->first();
+
+        $unsuscribe = SendEmail::where('to_email_address',  $this->email)
+        ->where(function($query) {
+            $query->orWhere('unsuscribe', 1)
+                ->orWhere('bounced', 1);	
+        })
+        ->first();
 
         if (!$unsuscribe) {
             Mail::send("emails." . $this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {

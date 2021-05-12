@@ -31,7 +31,6 @@ class MailController extends Controller
     public function sendTest()
     {
 
-        
         /*
         $email=date("Y-m-d h:i:s");
 
@@ -192,7 +191,7 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.25;
+                            $delay = $delay + 0.29;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
