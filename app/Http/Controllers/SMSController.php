@@ -25,9 +25,7 @@ class SMSController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
 
         $numbers = array_map('str_getcsv', file($filePath));
-        /* echo json_encode($numbers);
-        echo $request->content;
-        exit;*/
+        
 
         $sid = 'AC5ac49d7a04baa34212dc4f524e4aa72a';
         $token = 'f0240fb2ccdfcf9d0361bee2fdaf9ad2';

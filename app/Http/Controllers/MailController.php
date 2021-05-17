@@ -179,9 +179,6 @@ class MailController extends Controller
                 $campaing->user_id = Auth::user()->id;
             $campaing->save();
 
-            //return $campaing->id;
-
-           
             $subject = $request->subject;
             $from = $request->email;
             $name = $request->name;
@@ -191,7 +188,7 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.29;
+                            $delay = $delay + 0.12;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
