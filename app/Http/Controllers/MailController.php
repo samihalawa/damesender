@@ -188,7 +188,7 @@ class MailController extends Controller
                 if ($index > 0) {
                     try {
                         if ($contact[4]) {
-                            $delay = $delay + 0.12;
+                            $delay = $delay + 0.16;
                             $email = $contact[4];
                             $user = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
