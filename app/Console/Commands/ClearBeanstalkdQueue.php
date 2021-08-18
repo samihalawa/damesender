@@ -48,7 +48,7 @@ class ClearBeanstalkdQueue extends Command
     public function handle()
     {
         //$queue = ($this->argument('queue')) ? $this->argument('queue') : Config::get('queue.connections.beanstalkd.queue');
-        $queue="default";
+        $queue="beanstalkd";
 		$this->info(sprintf('Clearing queueuequeue: %s', $queue));
 
 		$pheanstalk = Queue::getPheanstalk();
@@ -57,7 +57,6 @@ class ClearBeanstalkdQueue extends Command
 
 		while ($job = $pheanstalk->reserve(0)) {			
             $pheanstalk->delete($job);
-           // $this->info(sprintf('Clearing : %s', $job));
            $this->info(sprintf('delete'));
     
 		}
