@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use App\CrmAgile;
+use DB;
 
 //use Illuminate\Support\HtmlString;
 //['html' => new HtmlString($html)
@@ -23,7 +24,7 @@ class MailController extends Controller
     {
         // Persmisos para acceder a estos metodos
         $this->middleware('auth');
-        $this->middleware('roledSMS');
+       // $this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
 
     }
@@ -31,18 +32,36 @@ class MailController extends Controller
     public function sendTest()
     {
 
-        /*
-        $email=date("Y-m-d h:i:s");
+        $unsuscribe = SendEmail::where(function($query) {
+            $query->orWhere('unsuscribe', 1)
+                ->orWhere('bounced', 1);	
+        })
+        ->orderby("created_at","desc")
+        ->paginate(200);
 
-        $file = fopen("/var/www/html/damesender/resources/views/emails/".$email.".blade.php", "a+");
+        foreach($unsuscribe as $x){
 
 
-        $texto="\n Route::get('/comprar-{criptp?}', [SeoController::class,'buy']);";
+            try{
 
-        fputs($file, $texto);
+            $user=DB::table('send_emails')
+            ->where('to_email_address', $x->to_email_address)
+            ->where("id","<>",$x->id)
+            ->delete();
 
-        fclose($file);
-        */
+            }catch(Exception $e){
+                echo "error";
+
+            }
+
+           // echo json_encode($user);
+            //echo "<br>";
+
+        }
+
+        return "ok";
+
+        //return $unsuscribe;
 
         return "true";
 

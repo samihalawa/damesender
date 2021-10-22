@@ -92,7 +92,7 @@ class ProcessEmail implements ShouldQueue
             if ($message_id) {
                 $sentEmail = new SendEmail;
                 $sentEmail->to_email_address = $info->to_email_address;
-                $sentEmail->subject = $info->subject;
+                //$sentEmail->subject = $info->subject;
                 $sentEmail->message = $mensxx;
                 $sentEmail->hash = $hash;
                 $sentEmail->aws_message_id = $message_id;

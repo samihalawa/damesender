@@ -16,7 +16,7 @@ class CreateSendEmailsTable extends Migration
         Schema::create('send_emails', function (Blueprint $table) {
             $table->increments('id');
             $table->string('to_email_address', 50);
-            $table->string('subject', 150);
+           // $table->string('subject', 150);
             $table->text('message');
             $table->text('aws_message_id');
             $table->text('hash');
