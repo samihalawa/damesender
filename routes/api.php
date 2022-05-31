@@ -15,7 +15,8 @@ use App\Http\Controllers\HomeController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/domain-purchase', [HomeController::class, 'sendEmail'])->name('sendEmail');
+Route::middleware('throttle:60')->post('/domain-purchase', [HomeController::class, 'sendEmail'])->name('sendEmail');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

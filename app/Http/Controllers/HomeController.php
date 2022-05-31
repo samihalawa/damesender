@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function sendEmail(Request $request){
 
       $email='chenggong2649@gmail.com';
-      $email='houltman@gmail.com';
+      //$email='houltman@gmail.com';
       try{
         $info = (object) [
           'to_email_address' => $email,
