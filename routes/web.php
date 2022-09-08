@@ -11,6 +11,8 @@ use App\Http\Controllers\CampaingController;
 use App\Http\Controllers\UnsuscribeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,9 @@ Route::get('/send', [MailController::class, 'sendTest']);
 Route::resource('/campaing', CampaingController::class);
 
 Route::resource('/historial', HistorialPagosController::class);
+
+Route::resource('/profile', ProfileController::class);
+
 Route::resource('/count', CountSMSAndEmailsController::class );
 Route::get('/email', [MailController::class, 'index']);
 Route::get('/bounced', [MailController::class, 'bounced']);
