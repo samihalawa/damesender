@@ -221,6 +221,21 @@ class MailController extends Controller
 
                             }
                         }
+                        if ($contact[3]) {
+                            $delay = $delay + 0.16;
+                            $email = $contact[3];
+                            $user = $contact[0] . " " . $contact[1];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+
+                            if (!$validator->fails()) {
+                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
+                                 ->delay(now()->addSeconds($delay));
+                                $sum++;
+
+                            }
+                        }
                     } catch (Exception $e) {
                         //capturar error
 
