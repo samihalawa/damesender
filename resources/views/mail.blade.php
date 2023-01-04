@@ -73,7 +73,20 @@
 						<div class="form-group row">
 							<label for="email" class="col-sm-4 col-form-label">From (email):</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="email" placeholder="From (email)..." name="email" id="email" required>
+								<select name="email" class="form-control">
+									<option></option>
+									<option value="securemail@musecoins.com">securemail@musecoins.com</option>
+									
+									<option value="autoemail@megacursos.net">autoemail@megacursos.net</option>
+									<option value="atencion@megacursos.com">atencion@megacursos.com</option>
+									<option value="ventas@losmegacursos.com">ventas@losmegacursos.com</option>
+									<option value="no-reply@megacursos.tv">no-reply@megacursos.tv</option>
+									<option value="atencion@damesender.com">atencion@damesender.com</option>
+									<option value="premium-email@damesender.com">premium-email@damesender.com</option>
+									<option value="info@asanadesktop.com">info@asanadesktop.com</option>
+								</select>
+<!--
+								<input class="form-control" type="email" placeholder="From (email)..." name="email" id="email" required>-->
 							</div>
 						</div>
 <!--
@@ -94,13 +107,20 @@
 					<div class="form-group row">
 						<label for="bcc" class="col-sm-4 col-form-label">Nombre Campaña</label>
 						<div class="col-sm-8">
-							<input class="form-control" type="text" placeholder="nombre campaña..." name="campaing" id="campaing" required>
+							<input class="form-control" type="text" placeholder="No incluya caracteres especiales" name="campaing" id="campaing" required>
 						</div>
 					</div>
 						<div class="form-group row">
 							<label for="subject" class="col-sm-4 col-form-label">Subject:</label>
 							<div class="col-sm-8">
 								<input class="form-control" type="text" placeholder="Subject..." name="subject" id="subject" required>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="name" class="col-sm-4 col-form-label">Email Copia:</label>
+							<div class="col-sm-8">
+								<input class="form-control" type="email" placeholder="Email para recibir copia de la campaña" name="copia" id="copia" required>
 							</div>
 						</div>
 					</div>

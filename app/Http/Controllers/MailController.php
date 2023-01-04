@@ -173,11 +173,15 @@ class MailController extends Controller
 
         $delay = 12;
 
+
         if ($contacts) {
 
             $body = ($request->type == 0 ? $request->content : $request->plain);
 
-            $nameEmail=$request->campaing."-".date("Y-m-d h:i:s");
+            $campaingx=str_replace(" ", "", $request->campaing);
+            $campaingx=str_replace(".", "", $campaingx);
+
+            $nameEmail=$campaingx."-".date("Y-m-d h:i:s");
 
             $nameEmail= str_replace(" ", "", $nameEmail);
 
@@ -203,6 +207,9 @@ class MailController extends Controller
             $name = $request->name;
             $sum = 1;
 
+            //return $request->copia;
+            ProcessEmail::dispatch("Inicio ".$subject, $body, $request->copia, $from, $name, $request->copia,$campaing->id,$nameEmail)->delay(now()->addSeconds(1));
+            //return "ok";
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
@@ -242,6 +249,9 @@ class MailController extends Controller
                     }
                 }
             }
+
+             ProcessEmail::dispatch("Final ".$subject, $body, $request->copia, $from, $name, $request->copia,$campaing->id,$nameEmail)->delay(now()->addSeconds(1));
+
             //return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
 
