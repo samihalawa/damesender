@@ -213,6 +213,22 @@ class MailController extends Controller
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
+                        if ($contact[0]) {
+                            $delay = $delay + 0.16;
+                            $email = $contact[0];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+
+                            if (!$validator->fails()) {
+                                $user = explode($email,"@");
+                                $user = $user[0];
+                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
+                                 ->delay(now()->addSeconds($delay));
+                                $sum++;
+
+                            }
+                        }
                         if ($contact[4]) {
                             $delay = $delay + 0.16;
                             $email = $contact[4];
