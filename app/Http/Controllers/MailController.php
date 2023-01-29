@@ -143,6 +143,8 @@ class MailController extends Controller
     }
     public function index()
     {
+        date_default_timezone_set('Europe/Madrid');
+
         $files = array_diff(scandir('../public/templates/img'), ['..', '.']);
 
         $templates = [];

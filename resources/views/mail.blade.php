@@ -111,7 +111,9 @@
 					</div>
 
 					<div class="form-group row">
-						<label for="bcc" class="col-sm-4 col-form-label">Fecha de envio</label>
+						<label for="bcc" class="col-sm-4 col-form-label">
+							Fecha de envio zona horaria Europa/ Madrid {{ date("Y-m-d H:i:s")}}	
+						</label>
 						<div class="col-sm-8">
 							<input  class="form-control"  type="datetime-local" name="datetime"> 
 							<!--
