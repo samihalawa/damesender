@@ -25,6 +25,7 @@ class MailRequest extends FormRequest
     {
             return [
                 'recipients' => 'required|file|mimes:csv,txt|max:32768',
+                'datetime'   => 'required',
             ];
     }
 }

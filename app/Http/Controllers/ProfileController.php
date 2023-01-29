@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
@@ -16,7 +15,7 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-      public function __construct()
+    public function __construct()
     {
         // Persmisos para acceder a estos metodos
         $this->middleware('auth');
@@ -26,8 +25,8 @@ class ProfileController extends Controller
     }
     public function index()
     {
-       // return "si";
-           return view("profile");
+        // return "si";
+        return view("profile");
     }
 
     /**
@@ -50,12 +49,12 @@ class ProfileController extends Controller
     {
 
         $validated = $request->validate([
-         'name' => 'required',
-         'password' => 'required|min:8',  
+            'name'     => 'required',
+            'password' => 'required|min:8',
         ]);
 
-        $payment = DB::table('users')->where("id",Auth::id())->update(['password' => Hash::make($request['password'])]);
-        
+        $payment = DB::table('users')->where("id", Auth::id())->update(['password' => Hash::make($request['password'])]);
+
         return Redirect::to('/email')->with('data', "Actualizacion de datos satisfactorio!");
 
     }

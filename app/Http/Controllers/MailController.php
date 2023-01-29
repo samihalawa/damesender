@@ -1,19 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\SendEmail;
+
+use App\CrmAgile;
 use App\Http\Requests\MailRequest;
+use App\Jobs\ClearAgile;
 use App\Jobs\ProcessEmail;
 use App\Jobs\ProcessNotification;
-use App\Jobs\ClearAgile;
 use App\Models\Campaign;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Models\SendEmail;
+use Carbon\Carbon;
+use DB;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
-use App\CrmAgile;
-use DB;
 
 //use Illuminate\Support\HtmlString;
 //['html' => new HtmlString($html)
@@ -24,37 +25,35 @@ class MailController extends Controller
     {
         // Persmisos para acceder a estos metodos
         $this->middleware('auth');
-       // $this->middleware('roledSMS');
+        // $this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
 
     }
 
     public function sendTest()
     {
-
-        $unsuscribe = SendEmail::where(function($query) {
+        $unsuscribe = SendEmail::where(function ($query) {
             $query->orWhere('unsuscribe', 1)
-                ->orWhere('bounced', 1);	
+                ->orWhere('bounced', 1);
         })
-        ->orderby("created_at","desc")
-        ->paginate(200);
+            ->orderby("created_at", "desc")
+            ->paginate(200);
 
-        foreach($unsuscribe as $x){
+        foreach ($unsuscribe as $x) {
 
+            try {
 
-            try{
+                $user = DB::table('send_emails')
+                    ->where('to_email_address', $x->to_email_address)
+                    ->where("id", "<>", $x->id)
+                    ->delete();
 
-            $user=DB::table('send_emails')
-            ->where('to_email_address', $x->to_email_address)
-            ->where("id","<>",$x->id)
-            ->delete();
-
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 echo "error";
 
             }
 
-           // echo json_encode($user);
+            // echo json_encode($user);
             //echo "<br>";
 
         }
@@ -65,25 +64,22 @@ class MailController extends Controller
 
         return "true";
 
-
-       ClearAgile::dispatch('kndasdnasdk@gmail.com')->delay(now()->addSeconds(2));
+        ClearAgile::dispatch('kndasdnasdk@gmail.com')->delay(now()->addSeconds(2));
         //return "ok";
-         $crm = new CrmAgile();
-         //$response = $crm->contacts();
-         $response = $crm->searchPerson("kndasdnasdk@gmail.com");
+        $crm = new CrmAgile();
+        //$response = $crm->contacts();
+        $response = $crm->searchPerson("kndasdnasdk@gmail.com");
 
-         if($response){
-             //return $response->id;
+        if ($response) {
+            //return $response->id;
             $deleta = $crm->deletePerson($response->id);
             return json_encode($response);
-         }
-         return "no";
+        }
+        return "no";
 
-       
+        $deleta = $crm->deletePerson($response->id);
 
-         $deleta = $crm->deletePerson($response->id);
-
-         dd($deleta);
+        dd($deleta);
 
         $validator = Validator::make(['email' => 'houltman@gmail.com'], [
             'email' => 'required|email',
@@ -91,16 +87,15 @@ class MailController extends Controller
 
         // dd($validator->fails());
 
-        $email = "houltman@gmail.com";
-        $user = "Gabriel Houltman";
+        $email   = "houltman@gmail.com";
+        $user    = "Gabriel Houltman";
         $subject = "Este año Black Friday y Navidad los presentamos juntos la primera semana del año";
-        $body = "Prueba beanstalkd y ses notification";
-        $from = "atencion@megacursos.com";
-        $name = "Megacursos";
+        $body    = "Prueba beanstalkd y ses notification";
+        $from    = "atencion@megacursos.com";
+        $name    = "Megacursos";
         //envio de email por colas
-        $delay = 5;
+        $delay    = 5;
         $campaing = "Febrero 2021";
-
 
         ProcessNotification::dispatch($subject, $body, $email, $from, $name, $user)->delay(now()->addSeconds($delay));
 
@@ -140,8 +135,6 @@ class MailController extends Controller
         }
          */
 
-        return $message_id;
-
         ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user)
             ->delay(now()->addSeconds($delay + 5));
 
@@ -158,7 +151,7 @@ class MailController extends Controller
             $filename = str_replace('_', ' ', explode('.', $file)[0]);
 
             $templates[] = [
-                'dir' => 'templates/img/' . $file,
+                'dir'  => 'templates/img/' . $file,
                 'name' => $filename,
             ];
         }
@@ -170,91 +163,89 @@ class MailController extends Controller
     {
         $filePath = $request->file('recipients')->getRealPath();
         $contacts = array_map('str_getcsv', file($filePath));
+        $sendDate = Carbon::createFromDate($request->datetime);
+        date_default_timezone_set('Europe/Madrid');
 
+        $date= date("Y-m-d H:i:s");
+        $now = Carbon::createFromDate($date);
+
+        if ($sendDate < $now){
+            return redirect::back()->withErrors("Error:en fecha zona Europa/Madrid, debe ser mayor que ". Carbon::now());
+        }
+      
+       
         $delay = 12;
-
 
         if ($contacts) {
 
             $body = ($request->type == 0 ? $request->content : $request->plain);
 
-            $campaingx=str_replace(" ", "", $request->campaing);
-            $campaingx=str_replace(".", "", $campaingx);
-
-            $nameEmail=$campaingx."-".date("Y-m-d h:i:s");
-
-            $nameEmail= str_replace(" ", "", $nameEmail);
-
-            $nameEmail= str_replace("/", "S", $nameEmail);
-
-          
-            $path = base_path('resources/views/emails/'.$nameEmail.'.blade.php');
-
+            $campaingx = str_replace(" ", "", $request->campaing);
+            $campaingx = str_replace(".", "", $campaingx);
+            $nameEmail = $campaingx . "-" . date("Y-m-d h:i:s");
+            $nameEmail = str_replace(" ", "", $nameEmail);
+            $nameEmail = str_replace("/", "S", $nameEmail);
+            $path = base_path('resources/views/emails/' . $nameEmail . '.blade.php');
             $file = fopen($path, "a+");
-
             fputs($file, $body);
-    
             fclose($file);
-
-            $campaing = new Campaign;
-                $campaing->name =$nameEmail;
-                $campaing->tipo = "Email";
-                $campaing->user_id = Auth::user()->id;
+            $campaing          = new Campaign;
+            $campaing->name    = $nameEmail;
+            $campaing->tipo    = "Email";
+            $campaing->user_id = Auth::user()->id;
             $campaing->save();
-
             $subject = $request->subject;
-            $from = $request->email;
-            $name = $request->name;
-            $sum = 1;
+            $from    = $request->email;
+            $name    = $request->name;
+            $sum     = 1;
 
-            //return $request->copia;
-            ProcessEmail::dispatch("Inicio ".$subject, $body, $request->copia, $from, $name, $request->copia,$campaing->id,$nameEmail)->delay(now()->addSeconds(1));
+            ProcessEmail::dispatch("Inicio " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)->delay($sendDate->addSeconds(1));
             //return "ok";
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
                         if ($contact[0]) {
-                            $delay = $delay + 0.16;
-                            $email = $contact[0];
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[0];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
 
                             if (!$validator->fails()) {
-                                $user = explode($email,"@");
+                                $user = explode($email, "@");
                                 $user = $user[0];
-                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
-                                 ->delay(now()->addSeconds($delay));
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
                                 $sum++;
 
                             }
                         }
                         if ($contact[4]) {
-                            $delay = $delay + 0.16;
-                            $email = $contact[4];
-                            $user = $contact[0] . " " . $contact[1];
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[4];
+                            $user      = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
 
                             if (!$validator->fails()) {
-                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
-                                 ->delay(now()->addSeconds($delay));
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
                                 $sum++;
 
                             }
                         }
-                        if ($contact[3]) {
-                            $delay = $delay + 0.16;
-                            $email = $contact[3];
-                            $user = $contact[0] . " " . $contact[1];
+                        if ($contact[3]){
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[3];
+                            $user      = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
 
                             if (!$validator->fails()) {
-                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user,$campaing->id,$nameEmail)
-                                 ->delay(now()->addSeconds($delay));
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
                                 $sum++;
 
                             }
@@ -266,7 +257,7 @@ class MailController extends Controller
                 }
             }
 
-             ProcessEmail::dispatch("Final ".$subject, $body, $request->copia, $from, $name, $request->copia,$campaing->id,$nameEmail)->delay(now()->addSeconds(1));
+            ProcessEmail::dispatch("Final " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)->delay(now()->addSeconds(1));
 
             //return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
@@ -276,22 +267,24 @@ class MailController extends Controller
         }
     }
 
-    public function bounced(){
-        $bounced=SendEmail::where("bounced",1)->select("to_email_address","bounced")->get();
+    public function bounced()
+    {
+        $bounced = SendEmail::where("bounced", 1)->select("to_email_address", "bounced")->get();
 
-        $delay=40;
-        $suma=2;
-        foreach($bounced as $b){
-          $info[]= $b->to_email_address;
-            $delay=$delay+$suma;
+        $delay = 40;
+        $suma  = 2;
+        foreach ($bounced as $b) {
+            $info[] = $b->to_email_address;
+            $delay  = $delay + $suma;
             ClearAgile::dispatch($b->to_email_address)->delay(now()->addSeconds($delay));
-            $suma=$suma+1;
+            $suma = $suma + 1;
         }
         return $info;
     }
-    public function complaint(){
-        $complaint =SendEmail::where("complaint",1)->select("to_email_address")->get();
-        return $complaint ;
+    public function complaint()
+    {
+        $complaint = SendEmail::where("complaint", 1)->select("to_email_address")->get();
+        return $complaint;
     }
 
 }
