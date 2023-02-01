@@ -11,6 +11,7 @@ use App\Models\Campaign;
 use App\Models\SendEmail;
 use Carbon\Carbon;
 use DB;
+use App\Models\UserEmail;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -146,7 +147,7 @@ class MailController extends Controller
         date_default_timezone_set('Europe/Madrid');
 
         $files = array_diff(scandir('../public/templates/img'), ['..', '.']);
-
+        $emails = UserEmail::where('status', 1)->get();
         $templates = [];
 
         foreach ($files as $file) {
@@ -158,7 +159,7 @@ class MailController extends Controller
             ];
         }
 
-        return view('mail', ['templates' => $templates]);
+        return view('mail', ['templates' => $templates, 'emails' => $emails]);
     }
 
     public function store(MailRequest $request)

@@ -152,9 +152,9 @@
 							<span class="nav-text">Payment History</span>
 						</a>
                     </li>
-                    <li class="{{ Request::is('/count') ? 'mm-active' : '' }}"><a href="{{ url('/count') }}" class="ai-icon" aria-expanded="false">
+                    <li class="{{ Request::is('/emails') ? 'mm-active' : '' }}"><a href="{{ url('/emails') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-gift"></i>
-							<span class="nav-text">Free SMS & Emails</span>
+							<span class="nav-text">Emails de envio</span>
 						</a>
 					</li>  
                     <li class="{{ Request::is('/campaing') ? 'mm-active' : '' }}"><a href="{{ url('/campaing') }}" class="ai-icon" aria-expanded="false">
