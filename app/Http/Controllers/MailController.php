@@ -175,8 +175,6 @@ class MailController extends Controller
         if ($sendDate < $now){
             return redirect::back()->withErrors("Error:en fecha zona Europa/Madrid, debe ser mayor que ". Carbon::now());
         }
-      
-       
         $delay = 12;
 
         if ($contacts) {
@@ -220,8 +218,8 @@ class MailController extends Controller
                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
                                     ->delay($sendDate->addSeconds($delay));
                                 $sum++;
-
                             }
+                            //$sendDate = $sendDate->addSeconds(1);
                         }
                         if ($contact[4]) {
                             $delay     = $delay + 0.16;
@@ -237,6 +235,7 @@ class MailController extends Controller
                                 $sum++;
 
                             }
+                            
                         }
                         if ($contact[3]){
                             $delay     = $delay + 0.16;
@@ -253,6 +252,9 @@ class MailController extends Controller
 
                             }
                         }
+
+                        $sendDate = $sendDate->addSeconds(1);
+
                     } catch (Exception $e) {
                         //capturar error
 
