@@ -199,13 +199,11 @@ class MailController extends Controller
 
             ProcessEmail::dispatch("Inicio " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)
                 ->delay($sendDate->addSeconds(1));
-            //return "ok";
-            //dd($contacts);
-            $test = array();
+
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
-                        if ($contact[0]) {
+                        if (isset($contact[0])) {
                             $delay     = $delay + 0.18;
                             $email     = $contact[0];
                             $validator = Validator::make(['email' => $email], [
