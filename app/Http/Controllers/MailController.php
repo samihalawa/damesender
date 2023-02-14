@@ -28,7 +28,6 @@ class MailController extends Controller
         $this->middleware('auth');
         // $this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
-
     }
 
     public function sendTest()
@@ -41,22 +40,14 @@ class MailController extends Controller
             ->paginate(200);
 
         foreach ($unsuscribe as $x) {
-
             try {
-
                 $user = DB::table('send_emails')
                     ->where('to_email_address', $x->to_email_address)
                     ->where("id", "<>", $x->id)
                     ->delete();
-
             } catch (Exception $e) {
                 echo "error";
-
             }
-
-            // echo json_encode($user);
-            //echo "<br>";
-
         }
 
         return "ok";
@@ -140,8 +131,11 @@ class MailController extends Controller
             ->delay(now()->addSeconds($delay + 5));
 
         return "ok";
-
     }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         date_default_timezone_set('Europe/Madrid');
@@ -162,11 +156,15 @@ class MailController extends Controller
         return view('mail', ['templates' => $templates, 'emails' => $emails]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function store(MailRequest $request)
     {
         $filePath = $request->file('recipients')->getRealPath();
         $contacts = array_map('str_getcsv', file($filePath));
         $sendDate = Carbon::createFromDate($request->datetime);
+        //$sendDate = Carbon::now();
         date_default_timezone_set('Europe/Madrid');
 
         $date = date("Y-m-d H:i:s");
@@ -175,10 +173,9 @@ class MailController extends Controller
         if ($sendDate < $now) {
             return redirect::back()->withErrors("Error:en fecha zona Europa/Madrid, debe ser mayor que " . Carbon::now());
         }
-        $delay = 12;
+        $delay = 10;
 
         if ($contacts) {
-
             $body = ($request->type == 0 ? $request->content : $request->plain);
 
             $campaingx = str_replace(" ", "", $request->campaing);
@@ -200,13 +197,45 @@ class MailController extends Controller
             $name    = $request->name;
             $sum     = 1;
 
-            ProcessEmail::dispatch("Inicio " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)->delay($sendDate->addSeconds(1));
+            ProcessEmail::dispatch("Inicio " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)
+                ->delay($sendDate->addSeconds(1));
             //return "ok";
+            //dd($contacts);
+            $test = array();
             foreach ($contacts as $index => $contact) {
                 if ($index > 0) {
                     try {
-
-                        if ($contact[4]) {
+                        if ($contact[0]) {
+                            $delay     = $delay + 0.18;
+                            $email     = $contact[0];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+                            if (!$validator->fails()) {
+                                // explode email
+                                $user = explode("@", $email);
+                                $user = $user[0];
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
+                                $sum++;
+                                continue;
+                            }
+                        }
+                        if (isset($contact[2])) {
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[2];
+                            $user      = $contact[0] . " " . $contact[1];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+                            if (!$validator->fails()) {
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
+                                $sum++;
+                                continue;
+                            }
+                        }
+                        if (isset($contact[4])) {
                             $delay     = $delay + 0.16;
                             $email     = $contact[4];
                             $user      = $contact[0] . " " . $contact[1];
@@ -217,58 +246,36 @@ class MailController extends Controller
                             if (!$validator->fails()) {
                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
                                     ->delay($sendDate->addSeconds($delay));
+                                continue;
                                 $sum++;
-
-                            }
-
-                        } else {
-                            if ($contact[3]) {
-                                $delay     = $delay + 0.16;
-                                $email     = $contact[3];
-                                $user      = $contact[0] . " " . $contact[1];
-                                $validator = Validator::make(['email' => $email], [
-                                    'email' => 'required|email',
-                                ]);
-
-                                if (!$validator->fails()) {
-                                    ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
-                                        ->delay($sendDate->addSeconds($delay));
-                                    $sum++;
-                                }
-                            } else {
-                                if ($contact[0]) {
-                                    $delay     = $delay + 0.16;
-                                    $email     = $contact[0];
-                                    $validator = Validator::make(['email' => $email], [
-                                        'email' => 'required|email',
-                                    ]);
-
-                                    if (!$validator->fails()) {
-                                        $user = explode($email, "@");
-                                        $user = $user[0];
-                                        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
-                                            ->delay($sendDate->addSeconds($delay));
-                                        $sum++;
-                                    }
-                                    //$sendDate = $sendDate->addSeconds(1);
-                                }
                             }
                         }
-
-                        $sendDate = $sendDate->addSeconds(1);
-
+                        if (isset($contact[3])) {
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[3];
+                            $user      = $contact[0] . " " . $contact[1];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+                            if (!$validator->fails()) {
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
+                                $sum++;
+                                continue;
+                            }
+                        }
+                        //$sendDate = $sendDate->addSeconds(1);
                     } catch (Exception $e) {
+                        //echo json_encode($e->getMessage());
                         //capturar error
-
                     }
                 }
             }
 
-            ProcessEmail::dispatch("Final " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)->delay(now()->addSeconds(1));
+            ProcessEmail::dispatch("Final " . $subject, $body, $request->copia, $from, $name, $request->copia, $campaing->id, $nameEmail)
+                ->delay($sendDate->addSeconds($delay));
 
-            //return $sum;
             return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
-
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
         }
@@ -293,5 +300,4 @@ class MailController extends Controller
         $complaint = SendEmail::where("complaint", 1)->select("to_email_address")->get();
         return $complaint;
     }
-
 }
