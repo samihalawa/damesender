@@ -17,8 +17,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ProcessEmail implements ShouldQueue
 {
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $subject;
     protected $body;
     protected $email;
@@ -44,7 +47,6 @@ class ProcessEmail implements ShouldQueue
         $this->user = $user;
         $this->campaing = $campaing;
         $this->nameEmail = $nameEmail;
-
     }
 
     /**
@@ -79,8 +81,8 @@ class ProcessEmail implements ShouldQueue
         $unsuscribe = SendEmail::where('to_email_address', $this->email)
             ->where(function ($query) {
                 $query->orWhere('unsuscribe', 1)
-                    ->orWhere('bounced', 1)
-                })
+                    ->orWhere('bounced', 1);
+            })
             ->first();
 
         if (!$unsuscribe) {
@@ -94,7 +96,7 @@ class ProcessEmail implements ShouldQueue
             $message_id = $headers->get('X-SES-Message-ID')->getValue();
 
             if ($message_id) {
-                $sentEmail = new SendEmail;
+                $sentEmail = new SendEmail();
                 $sentEmail->to_email_address = $info->to_email_address;
                 //$sentEmail->subject = $info->subject;
                 $sentEmail->message = $mensxx;
