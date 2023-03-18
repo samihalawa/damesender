@@ -27,20 +27,17 @@ class CrmAgile extends Connection
         return $this->makeRequest("contacts/" . $user->id_agile, null, "GET", "application/json");
     }
 
-    public function sendAgile(User $user , $tags)
+    public function sendAgile(User $user, $tags)
     {
-       
-        $search=$this->search($user);
+        $search = $this->search($user);
 
-        if($search){
-            $tag=json_encode($tags);
+        if ($search) {
+            $tag = json_encode($tags);
             $this->add_agiletags($user->email, $tag);
-        }else{
-            $this->create($user,$tags);
+        } else {
+            $this->create($user, $tags);
         }
-
     }
-
 
     public function search(User $user)
     {
@@ -81,22 +78,22 @@ class CrmAgile extends Connection
             "owner_id"=>$data->owner->id
         );
         $note_json[] = array(
-            "subject"=>"El sitio web que estás vendiendo (en caso de negocios en línea).",
-            "description"=>$request->site,
-            "contact_ids"=>array($data->id),
-            "owner_id"=>$data->owner->id
+            "subject"       => "El sitio web que estás vendiendo (en caso de negocios en línea).",
+            "description"   => $request->site,
+            "contact_ids"   => array($data->id),
+            "owner_id"      => $data->owner->id
+            );
+        $note_json[] = array(
+            "subject"       => "Naturaleza de los negocios.",
+            "description"   => $request->business,
+            "contact_ids"   => array($data->id),
+            "owner_id"      => $data->owner->id
         );
         $note_json[] = array(
-            "subject"=>"Naturaleza de los negocios.",
-            "description"=>$request->business,
-            "contact_ids"=>array($data->id),
-            "owner_id"=>$data->owner->id
-        );
-        $note_json[] = array(
-            "subject"=>"Cómo desea recibir los pagos que nos envían sus clientes (cuenta bancaria en qué país o BTC).",
-            "description"=>$request->account,
-            "contact_ids"=>array($data->id),
-            "owner_id"=>$data->owner->id
+            "subject"       => "Cómo desea recibir los pagos que nos envían sus clientes (cuenta bancaria en qué país o BTC).",
+            "description"   => $request->account,
+            "contact_ids"   => array($data->id),
+            "owner_id"      => $data->owner->id
         );
         $note_json[] = array(
             "subject"=>"Si desea adjuntar alguna cuenta de comunicación instantánea como Whatsapp es bienvenido a hacerlo para acelerar la comunicación.",
@@ -104,8 +101,7 @@ class CrmAgile extends Connection
             "contact_ids"=>array($data->id),
             "owner_id"=>$data->owner->id
         );
-          
-        foreach($note_json as $data){
+        foreach ($note_json as $data) {
             $note_json_aux = json_encode($data);
             $result = $this->curl_wrap("notes", $note_json_aux, "POST", "application/json");
         }
@@ -143,16 +139,14 @@ class CrmAgile extends Connection
     }
     public function contacts()
     {
-       $result = $this->curl_wrap("contacts?page_size=5&cursor=", null, "GET", "application/json");
+        $result = $this->curl_wrap("contacts?page_size=5&cursor=", null, "GET", "application/json");
        // $result = $this->curl_wrap("contacts/list", null, "GET", "application/json");
-
         return $result = json_decode($result, false, 512, JSON_BIGINT_AS_STRING);
     }
 
 
     public function add_agiletags($email, $tags)
     {
-       
         $fields = array(
             'email' => urlencode($email),
             'tags' => urlencode($tags)

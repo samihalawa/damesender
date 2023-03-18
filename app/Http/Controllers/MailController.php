@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Created by ProcessEmail
+ */
+
 namespace App\Http\Controllers;
 
 use App\CrmAgile;
@@ -219,14 +223,30 @@ class MailController extends Controller
                                 continue;
                             }
                         }
-                        if (isset($contact[2])) {
+                        if (isset($contact[1])) {
                             $delay     = $delay + 0.16;
-                            $email     = $contact[2];
-                            $user      = $contact[0] . " " . $contact[1];
+                            $email     = $contact[1];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
                             if (!$validator->fails()) {
+                                $user = explode("@", $email);
+                                $user = $user[0];
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
+                                $sum++;
+                                continue;
+                            }
+                        }
+                        if (isset($contact[2])) {
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[2];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+                            if (!$validator->fails()) {
+                                $user = explode("@", $email);
+                                $user = $user[0];
                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
                                     ->delay($sendDate->addSeconds($delay));
                                 $sum++;
@@ -236,12 +256,13 @@ class MailController extends Controller
                         if (isset($contact[4])) {
                             $delay     = $delay + 0.16;
                             $email     = $contact[4];
-                            $user      = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
 
                             if (!$validator->fails()) {
+                                $user = explode("@", $email);
+                                $user = $user[0];
                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
                                     ->delay($sendDate->addSeconds($delay));
                                 continue;
@@ -251,11 +272,12 @@ class MailController extends Controller
                         if (isset($contact[3])) {
                             $delay     = $delay + 0.16;
                             $email     = $contact[3];
-                            $user      = $contact[0] . " " . $contact[1];
                             $validator = Validator::make(['email' => $email], [
                                 'email' => 'required|email',
                             ]);
                             if (!$validator->fails()) {
+                                $user = explode("@", $email);
+                                $user = $user[0];
                                 ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
                                     ->delay($sendDate->addSeconds($delay));
                                 $sum++;

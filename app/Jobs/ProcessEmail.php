@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Created by ProcessEmail
+ */
+
 namespace App\Jobs;
 
 use App\Models\SendEmail;
@@ -72,12 +76,12 @@ class ProcessEmail implements ShouldQueue
 
         //$unsuscribe = SendEmail::where(["to_email_address" => $this->email, "unsuscribe"=> 1])->first();
 
-        $unsuscribe = SendEmail::where('to_email_address',  $this->email)
-        ->where(function($query) {
-            $query->orWhere('unsuscribe', 1)
-                ->orWhere('bounced', 1);	
-        })
-        ->first();
+        $unsuscribe = SendEmail::where('to_email_address', $this->email)
+            ->where(function ($query) {
+                $query->orWhere('unsuscribe', 1)
+                    ->orWhere('bounced', 1)
+                })
+            ->first();
 
         if (!$unsuscribe) {
             Mail::send("emails." . $this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
@@ -99,7 +103,6 @@ class ProcessEmail implements ShouldQueue
                 $sentEmail->campaing_id = $this->campaing;
                 $sentEmail->save();
             }
-
         }
     }
 }

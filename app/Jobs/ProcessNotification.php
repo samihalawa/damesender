@@ -34,7 +34,6 @@ class ProcessNotification implements ShouldQueue
         $this->from = $from;
         $this->name = $name;
         $this->user = $user;
-
     }
 
     /**
@@ -115,7 +114,5 @@ $log=  DB::table('testemail')->insert(
 ]
 );
  */
-
     }
-
 }
