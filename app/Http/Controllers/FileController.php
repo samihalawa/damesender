@@ -9,6 +9,12 @@ use Validator;
 
 class FileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,7 +64,7 @@ class FileController extends Controller
         $file = fopen(public_path() . '/files/' . $name, "r");
         // guardar archivo
         $i = 0;
-        while (($datos = fgetcsv($file, "", ",")) !== false) {
+        while (($datos = fgetcsv($file, 1000, ",")) !== false) {
             $i++;
             if ($i > 1) {
                 $this->validaLinea($datos, $_file->id);

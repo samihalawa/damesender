@@ -17,7 +17,7 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->string("name", 30);
             $table->string("tipo", 30);
-            $table->string("ubicacion", 30);
+            $table->string("ubicacion", 255);
             $table->timestamps();
         });
     }

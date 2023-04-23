@@ -164,7 +164,7 @@
                     </a>
                 </li> 
 
-                <li class="{{ Request::is('/files') ? 'mm-active' : '' }}"><a href="{{ url('/files') }}" class="ai-icon" aria-expanded="false">
+                <li class="{{ Request::is('/files') ? 'mm-active' : '' }}"><a href="{{ url('/archivos') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-upload"></i>
 							<span class="nav-text">Subir Archivo</span>
 						</a>
