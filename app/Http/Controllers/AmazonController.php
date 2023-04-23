@@ -27,7 +27,6 @@ class AmazonController extends Controller
 
         if ($data['Type'] == 'SubscriptionConfirmation') {
             file_get_contents($data['SubscribeURL']);
-            
         } elseif ($data['Type'] == 'Notification') {
             $message = json_decode($data['Message'], true);
             // Log::info($message);
@@ -41,14 +40,15 @@ class AmazonController extends Controller
                     $email = SendEmail::where('aws_message_id', $message_id)->first();
                     $email->bounced = true;
                     $email->save();
-                    
-                    $log=  DB::table('logs')->insert(
+
+                    $log =  DB::table('logs')->insert(
                         [
                         'name' => "Bounce",
-                        'create_at'=>date("Y-m-d h:i:s"),
+                        'type' => "bounce",
+                        'create_at' => date("Y-m-d h:i:s"),
                         ]
                     );
-                    
+
                     // foreach ($bounce['bouncedRecipients'] as $bouncedRecipient){
                     //     $emailAddress = $bouncedRecipient['emailAddress'];
                     //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Bounce']);

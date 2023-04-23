@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilesTable extends Migration
+class CreateFileContactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file_contacts', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 30);
-            $table->string("tipo", 30);
-            $table->string("ubicacion", 30);
+            $table->string('email');
+            $table->string('name');
+            // file id
+            $table->unsignedBigInteger('file_id');
+            $table->foreign('file_id')->references('id')->on('files');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file_contacts');
     }
 }

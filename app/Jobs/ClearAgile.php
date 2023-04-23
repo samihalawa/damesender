@@ -13,7 +13,11 @@ use DB;
 
 class ClearAgile implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+
     protected $email;
 
     /**
@@ -33,24 +37,19 @@ class ClearAgile implements ShouldQueue
      */
     public function handle()
     {
-        
+
         $crm = new CrmAgile();
          $response = $crm->searchPerson($this->email);
 
-         if($response){
+        if ($response) {
             $deleta = $crm->deletePerson($response->id);
-            $log=  DB::table('logs')->insert(
+            $log =  DB::table('logs')->insert(
                 [
-                'name' => "delete bounced".$this->email,
-                'type'=>"delete",
-                'create_at'=>date("Y-m-d h:i:s"),
+                'name' => "delete bounced" . $this->email,
+                'type' => "delete",
+                'create_at' => date("Y-m-d h:i:s"),
                 ]
             );
-         }
-         
-
-
-        
-
+        }
     }
 }

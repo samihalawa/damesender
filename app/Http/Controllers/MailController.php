@@ -253,6 +253,21 @@ class MailController extends Controller
                                 continue;
                             }
                         }
+                        if (isset($contact[3])) {
+                            $delay     = $delay + 0.16;
+                            $email     = $contact[3];
+                            $validator = Validator::make(['email' => $email], [
+                                'email' => 'required|email',
+                            ]);
+                            if (!$validator->fails()) {
+                                $user = explode("@", $email);
+                                $user = $user[0];
+                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
+                                    ->delay($sendDate->addSeconds($delay));
+                                $sum++;
+                                continue;
+                            }
+                        }
                         if (isset($contact[4])) {
                             $delay     = $delay + 0.16;
                             $email     = $contact[4];
@@ -269,21 +284,7 @@ class MailController extends Controller
                                 $sum++;
                             }
                         }
-                        if (isset($contact[3])) {
-                            $delay     = $delay + 0.16;
-                            $email     = $contact[3];
-                            $validator = Validator::make(['email' => $email], [
-                                'email' => 'required|email',
-                            ]);
-                            if (!$validator->fails()) {
-                                $user = explode("@", $email);
-                                $user = $user[0];
-                                ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaing->id, $nameEmail)
-                                    ->delay($sendDate->addSeconds($delay));
-                                $sum++;
-                                continue;
-                            }
-                        }
+
                         //$sendDate = $sendDate->addSeconds(1);
                     } catch (Exception $e) {
                         //echo json_encode($e->getMessage());

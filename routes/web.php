@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmazonController;
 use App\Http\Controllers\CampaingController;
 use App\Http\Controllers\UnsuscribeController;
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -34,7 +35,9 @@ Route::resource('/historial', HistorialPagosController::class);
 
 Route::resource('/profile', ProfileController::class);
 
-Route::resource('/emails', EmailController::class );
+Route::resource('/emails', EmailController::class);
+// files
+Route::resource('/archivos', FileController::class);
 Route::get('/email', [MailController::class, 'index']);
 Route::get('/bounced', [MailController::class, 'bounced']);
 Route::get('/complaint', [MailController::class, 'complaint']);

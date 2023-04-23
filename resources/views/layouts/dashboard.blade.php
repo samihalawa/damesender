@@ -157,11 +157,18 @@
 							<span class="nav-text">Emails de envio</span>
 						</a>
 					</li>  
+
                     <li class="{{ Request::is('/campaing') ? 'mm-active' : '' }}"><a href="{{ url('/campaing') }}" class="ai-icon" aria-expanded="false">
                         <i class="flaticon-381-gift"></i>
                         <span class="nav-text">Campaing</span>
                     </a>
                 </li> 
+
+                <li class="{{ Request::is('/files') ? 'mm-active' : '' }}"><a href="{{ url('/files') }}" class="ai-icon" aria-expanded="false">
+							<i class="flaticon-381-upload"></i>
+							<span class="nav-text">Subir Archivo</span>
+						</a>
+					</li> 
                 </ul>
             </div>
             
