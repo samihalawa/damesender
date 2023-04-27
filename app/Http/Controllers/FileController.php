@@ -9,7 +9,6 @@ use Validator;
 
 class FileController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -142,6 +141,13 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $file = File::find($id);
+        if ($file) {
+            // borrar archivo
+            unlink($file->ubicacion);
+            $file->delete();
+            return redirect()->route('archivos.index')
+            ->with('success', 'File deleted successfully.');
+        }
     }
 }

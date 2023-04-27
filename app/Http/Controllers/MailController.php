@@ -14,6 +14,8 @@ use App\Jobs\ProcessNotification;
 use App\Models\Campaign;
 use App\Models\SendEmail;
 use App\Models\UserEmail;
+use App\Models\FileContact;
+use App\Models\Customer;
 use Carbon\Carbon;
 use DB;
 use Exception;
@@ -34,8 +36,66 @@ class MailController extends Controller
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
     }
 
+    public function verifica($info)
+    {
+        foreach ($info as $x) {
+            $email = $x->to_email_address;
+            try {
+                $customer = new Customer();
+                $customer->email = $email;
+                $customer->bounced = $x->bounced;
+                $customer->complaint = $x->complaint;
+                $customer->unsuscribe = $x->unsuscribe;
+                $customer->save();
+            } catch (Exception $e) {
+                if ($x->bounced) {
+                    $customer = Customer::where('email', $email)->first();
+                    $customer->bounced = $x->bounced;
+                    $customer->save();
+                }
+                if ($x->complaint) {
+                    $customer = Customer::where('email', $email)->first();
+                    $customer->complaint = $x->complaint;
+                    $customer->save();
+                }
+                if ($x->unsuscribe) {
+                    $customer = Customer::where('email', $email)->first();
+                    $customer->unsuscribe = $x->unsuscribe;
+                    $customer->save();
+                }
+                //echo json_encode($e->getMessage());
+            }
+            //break;
+        }
+    }
+
     public function sendTest()
     {
+        $paginator = 500;
+        // count get page total
+        $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate($paginator, ['*'], 'page', 1);
+
+        $total = $get->total();
+        $paginas = ceil($total / $paginator);
+
+        $this->verifica($get);
+
+        for ($i = 2; $i <= $paginas; $i++) {
+            $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate($paginator, ['*'], 'page', $i);
+            $this->verifica($get);
+        }
+
+        return $paginas;
+
+        // page next
+        $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate(500, ['*'], 'page', 2);
+
+        // page next
+        $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate(500, ['*'], 'page', 3);
+        //pagina siguiente
+        $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate(500, ['*'], 'page', 4);
+
+        return $get;
         $unsuscribe = SendEmail::where(function ($query) {
             $query->orWhere('unsuscribe', 1)
                 ->orWhere('bounced', 1);
@@ -191,7 +251,7 @@ class MailController extends Controller
             $file      = fopen($path, "a+");
             fputs($file, $body);
             fclose($file);
-            $campaing          = new Campaign;
+            $campaing          = new Campaign();
             $campaing->name    = $nameEmail;
             $campaing->tipo    = "Email";
             $campaing->user_id = Auth::user()->id;

@@ -19,7 +19,10 @@ class CreateFileContactsTable extends Migration
             $table->string('name');
             // file id
             $table->unsignedBigInteger('file_id');
-            $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade');
+            $table->foreign('file_id')
+                ->references('id')
+                ->onDelete('cascade')
+                ->on('files');
             $table->timestamps();
         });
     }
