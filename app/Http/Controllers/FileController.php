@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\File;
 use App\Models\FileContact;
+use App\Models\Campaign;
 use Validator;
 
 class FileController extends Controller
@@ -25,6 +26,13 @@ class FileController extends Controller
 
         $files = File::paginate(10);
         return view('files.index', compact('files'));
+    }
+
+    public function estadisticas()
+    {
+        $campaings = Campaign::orderBy("id", "desc")->paginate(10);
+
+        return view('campaignew', compact('campaings'));
     }
 
     /**

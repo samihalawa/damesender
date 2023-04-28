@@ -164,9 +164,15 @@
                     </a>
                 </li> 
 
-                <li class="{{ Request::is('/files') ? 'mm-active' : '' }}"><a href="{{ url('/archivos') }}" class="ai-icon" aria-expanded="false">
+                <li class="{{ Request::is('/archivos') ? 'mm-active' : '' }}"><a href="{{ url('/archivos') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-upload"></i>
 							<span class="nav-text">Subir Archivo</span>
+						</a>
+					</li> 
+
+                    <li class="{{ Request::is('/estadisticas') ? 'mm-active' : '' }}"><a href="{{ url('/estadisticas') }}" class="ai-icon" aria-expanded="false">
+							<i class="flaticon-381-smartphone"></i>
+							<span class="nav-text">Estadisticas</span>
 						</a>
 					</li> 
                 </ul>

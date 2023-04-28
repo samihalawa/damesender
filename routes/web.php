@@ -38,6 +38,7 @@ Route::resource('/profile', ProfileController::class);
 Route::resource('/emails', EmailController::class);
 // files
 Route::resource('/archivos', FileController::class);
+Route::get('/estadisticas', [ FileController::class,'estadisticas']);
 Route::get('/email', [MailController::class, 'index']);
 Route::get('/bounced', [MailController::class, 'bounced']);
 Route::get('/complaint', [MailController::class, 'complaint']);
