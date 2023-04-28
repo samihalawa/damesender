@@ -29,42 +29,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Queue::before(function (JobProcessing $event) {
-           // DB::beginTransaction();
-            /*
-            $info=[
-                "conection"=>$event->connectionName,
-                "job"=>$event->job,
-                "payload"=>$event->job->payload()
-            ];
-            
-            
-
-            $log=  DB::table('testemail')->insert(
-                [
-                'job' =>json_encode($info),
-                'info'=>"antes",
-                ]
-            );
-            */
-            
-            
-          // DB::commit();
-            
         });
 
         Queue::after(function (JobProcessed $event) {
-            // $event->connectionName
-            // $event->job
-            // $event->job->payload()
-            /*
-            $log=  DB::table('testemail')->insert(
-                [
-                'job' =>json_encode($event->job->payload()),
-                'info'=>"despues",
-                ]
-            );
-            */
-            
-        }); 
+        });
     }
 }

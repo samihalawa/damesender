@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class HistorialPagosController extends Controller
 {
-
-  
-
-    public function index(){
+    public function index()
+    {
         /*
         $id =Auth::user()->id;
         if(Auth::user()->type == 'Cliente'){
@@ -29,8 +27,8 @@ class HistorialPagosController extends Controller
             'method_of_payment as MethodsOfPayments','services.name','requested_amount')
             ->where('gift_service','0')->get();
         }*/
-        $historial=[];
+        $historial = [];
 
-        return view("historial_payment",compact('historial'));
+        return view("historial_payment", compact('historial'));
     }
 }

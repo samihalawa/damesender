@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Crea tabla customers
+ *
+ * Para almacenar los contactos
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

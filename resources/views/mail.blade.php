@@ -59,14 +59,21 @@
 					<div class="tab-pane active pt-4" id="tabs-1" role="tabpanel">
 						<div class="form-group">
 							<label for="recipients">Select a list of recipients (CSV):</label>
-							<input type="file" class="form-control-file" name="recipients" id="recipients" required>
+
+							<select name="recipients" class="form-control" id="recipients">
+									<option></option>
+									@foreach($files_csv as $file)
+			                        <option value="{{$file->id }}">{{$file->name}}<span style="font-weight:bold!important"> ({{General::countFiles($file->id)}}) </span></option>   
+			                    	@endforeach
+							</select>
+
 						</div>
 					</div>
 					<div class="tab-pane pt-4" id="tabs-2" role="tabpanel">
 						<div class="form-group row">
 							<label for="name" class="col-sm-4 col-form-label">From (name):</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="From (name)..." name="name" id="name" required>
+								<input class="form-control" type="text" value="{{old('name')}}"  placeholder="From (name)..." name="name" id="name" required>
 							</div>
 						</div>
 						
@@ -103,7 +110,7 @@
 					<div class="form-group row">
 						<label for="bcc" class="col-sm-4 col-form-label">Nombre Campaña</label>
 						<div class="col-sm-8">
-							<input class="form-control" type="text" placeholder="No incluya caracteres especiales" name="campaing" id="campaing" required>
+							<input class="form-control" type="text" value="{{old('campaing')}}" placeholder="No incluya caracteres especiales" name="campaing" id="campaing" required>
 						</div>
 					</div>
 
@@ -112,7 +119,7 @@
 							Fecha de envio zona horaria Europa/ Madrid {{ date("Y-m-d H:i:s")}}	
 						</label>
 						<div class="col-sm-8">
-							<input  class="form-control"  type="datetime-local" name="datetime"> 
+							<input  class="form-control" value="{{old('datetime')}}"   type="datetime-local" name="datetime"> 
 							<!--
 							<input class="form-control" type="date" name="datetime" id="datetime" required>
 							-->
@@ -122,14 +129,14 @@
 					<div class="form-group row">
 							<label for="subject" class="col-sm-4 col-form-label">Subject:</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="text" placeholder="Subject..." name="subject" id="subject" required>
+								<input class="form-control" type="text" value="{{old('subject')}}" placeholder="Subject..." name="subject" id="subject" required>
 							</div>
 					</div>
 
 						<div class="form-group row">
 							<label for="name" class="col-sm-4 col-form-label">Email Copia:</label>
 							<div class="col-sm-8">
-								<input class="form-control" type="email" placeholder="Email para recibir copia de la campaña" name="copia" id="copia" required>
+								<input class="form-control" type="email" value="{{old('copia')}}" placeholder="Email para recibir copia de la campaña" name="copia" id="copia" required>
 							</div>
 						</div>
 					</div>

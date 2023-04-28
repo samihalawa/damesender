@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Campaign;
+
 class CampaingController extends Controller
 {
     /**
@@ -18,17 +19,16 @@ class CampaingController extends Controller
         $this->middleware('auth');
         $this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
-
     }
 
 
     public function index()
     {
-        $campaings=Campaign::orderBy("id","desc")->paginate(5);
+        $campaings = Campaign::orderBy("id", "desc")->paginate(5);
 
         //dd($campaings);
 
-        return view("campaings",compact('campaings'));
+        return view("campaings", compact('campaings'));
     }
 
     /**

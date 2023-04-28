@@ -8,13 +8,17 @@ namespace App\Http\Controllers;
 
 use App\CrmAgile;
 use App\Http\Requests\MailRequest;
+use Illuminate\Http\Request;
 use App\Jobs\ClearAgile;
 use App\Jobs\ProcessEmail;
+use App\Jobs\SenderEmail;
 use App\Jobs\ProcessNotification;
 use App\Models\Campaign;
 use App\Models\SendEmail;
 use App\Models\UserEmail;
+use App\Models\File;
 use App\Models\FileContact;
+use App\Models\CampaingCustomer;
 use App\Models\Customer;
 use Carbon\Carbon;
 use DB;
@@ -22,6 +26,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
+use App\Events\SenderEvent;
 
 //use Illuminate\Support\HtmlString;
 //['html' => new HtmlString($html)
@@ -71,7 +76,7 @@ class MailController extends Controller
 
     public function sendTest()
     {
-        $paginator = 500;
+        $paginator = 300;
         // count get page total
         $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate($paginator, ['*'], 'page', 1);
 
@@ -79,6 +84,8 @@ class MailController extends Controller
         $paginas = ceil($total / $paginator);
 
         $this->verifica($get);
+
+        return "OK";
 
         for ($i = 2; $i <= $paginas; $i++) {
             $get = SendEmail::select('to_email_address', 'bounced', 'complaint', 'unsuscribe')->paginate($paginator, ['*'], 'page', $i);
@@ -206,6 +213,7 @@ class MailController extends Controller
 
         $files     = array_diff(scandir('../public/templates/img'), ['..', '.']);
         $emails    = UserEmail::where('status', 1)->get();
+        $files_csv = File::paginate(10);
         $templates = [];
 
         foreach ($files as $file) {
@@ -217,13 +225,13 @@ class MailController extends Controller
             ];
         }
 
-        return view('mail', ['templates' => $templates, 'emails' => $emails]);
+        return view('mail', ['templates' => $templates, 'emails' => $emails, 'files_csv' => $files_csv]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function store(MailRequest $request)
+    public function storeOld(MailRequest $request)
     {
         $filePath = $request->file('recipients')->getRealPath();
         $contacts = array_map('str_getcsv', file($filePath));
@@ -360,6 +368,50 @@ class MailController extends Controller
         } else {
             return redirect::back()->withErrors("Error:ingrese correctamente el archivo .csv.");
         }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function store(MailRequest $request)
+    {
+        $sendDate = Carbon::createFromDate($request->datetime);
+        date_default_timezone_set('Europe/Madrid');
+
+        $date = date("Y-m-d H:i:s");
+        $now  = Carbon::createFromDate($date);
+
+        if ($sendDate < $now) {
+            return redirect::back()->withErrors("Error:en fecha zona Europa/Madrid, debe ser mayor que " . Carbon::now());
+        }
+        $body = ($request->type == 0 ? $request->content : $request->plain);
+        $campaingx = str_replace(" ", "", $request->campaing);
+        $campaingx = str_replace(".", "", $campaingx);
+        $nameEmail = $campaingx . "-" . date("Y-m-d h:i:s");
+        $nameEmail = str_replace(" ", "", $nameEmail);
+        $nameEmail = str_replace("/", "S", $nameEmail);
+        $path      = base_path('resources/views/emails/' . $nameEmail . '.blade.php');
+        $file      = fopen($path, "a+");
+        fputs($file, $body);
+        fclose($file);
+        $campaing          = new Campaign();
+        $campaing->name    = $nameEmail;
+        $campaing->tipo    = "Email";
+        $campaing->user_id = Auth::user()->id;
+        $campaing->save();
+        $subject = $request->subject;
+        $from    = $request->email;
+        $name    = $request->name;
+
+        $file = $request->recipients;
+
+        SenderEmail::dispatch($subject, $body, $from, $name, $campaing, $file, $sendDate);
+
+        //event(new SenderEvent($subject, $body, $from, $name, $campaing, $file_id, $sendDate));
+
+        //return "Ok";
+
+        return Redirect::to('/email')->with('data', "Campaña en cola de envio satisfactorio!");
     }
 
     public function bounced()

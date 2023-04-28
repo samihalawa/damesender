@@ -25,19 +25,17 @@ class SMSController extends Controller
         $filePath = $request->file('recipients')->getRealPath();
 
         $numbers = array_map('str_getcsv', file($filePath));
-        
+
 
         $sid = 'AC5ac49d7a04baa34212dc4f524e4aa72a';
         $token = 'f0240fb2ccdfcf9d0361bee2fdaf9ad2';
         $client = new Client($sid, $token);
-        
+
         foreach ($numbers as $index => $number) {
             if ($index > 0) {
-
                 $data['recipient'] = $number[5];
 
                 $response = $client->messages->create(
-
                     $data['recipient'], //Destino
                     [
                         'from' => '+16593480483',
@@ -53,6 +51,5 @@ class SMSController extends Controller
             $data = 'SMS sent successfully!';
             return Redirect::to('/sms')->with('data', $data);
         }
-
     }
 }

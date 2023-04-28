@@ -34,14 +34,10 @@ class UnsuscribeController extends Controller
         $email = SendEmail::select("to_email_address")->where(['campaing_id' => $campaing, "hash" => $code])->first();
 
         if ($email) {
-
             return view('unsuscribe', ['campaing' => $campaing, "code" => $code]);
-
         } else {
-
             return abort(404);
         }
-
     }
 
     /**
@@ -65,7 +61,6 @@ class UnsuscribeController extends Controller
         $email = SendEmail::select("to_email_address", "id")->where(['campaing_id' => $request->campaing, "hash" => $request->code])->first();
 
         if ($email) {
-
             $affected = DB::table('send_emails')
                 ->where('id', $email->id)
                 ->update(['unsuscribe' => true]);
@@ -77,11 +72,9 @@ class UnsuscribeController extends Controller
             $response = $crm->add_agiletags($email->to_email_address, $tag);
 
             return view("end");
-
         } else {
             return redirect()->back();
         }
-
     }
 
     /**

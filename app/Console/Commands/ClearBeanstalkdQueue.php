@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use Illuminate\Support\Facades\Queue;
 
 class ClearBeanstalkdQueue extends Command
@@ -34,11 +33,11 @@ class ClearBeanstalkdQueue extends Command
     }
 
     public function getArguments()
-	{
-		return array(
-			array('queue', InputArgument::OPTIONAL, 'The name of the queue to clear.'),
-		);
-	}
+    {
+        return array(
+            array('queue', InputArgument::OPTIONAL, 'The name of the queue to clear.'),
+        );
+    }
 
     /**
      * Execute the console command.
@@ -48,19 +47,18 @@ class ClearBeanstalkdQueue extends Command
     public function handle()
     {
         //$queue = ($this->argument('queue')) ? $this->argument('queue') : Config::get('queue.connections.beanstalkd.queue');
-        $queue="beanstalkd";
-		$this->info(sprintf('Clearing queueuequeue: %s', $queue));
+        $queue = "beanstalkd";
+        $this->info(sprintf('Clearing queueuequeue: %s', $queue));
 
-		$pheanstalk = Queue::getPheanstalk();
-		$pheanstalk->useTube($queue);
-		$pheanstalk->watch($queue);
+        $pheanstalk = Queue::getPheanstalk();
+        $pheanstalk->useTube($queue);
+        $pheanstalk->watch($queue);
 
-		while ($job = $pheanstalk->reserve(0)) {			
+        while ($job = $pheanstalk->reserve(0)) {
             $pheanstalk->delete($job);
-           $this->info(sprintf('delete'));
-    
-		}
+            $this->info(sprintf('delete'));
+        }
 
-		$this->info('...cleared.');
+        $this->info('...cleared.');
     }
 }

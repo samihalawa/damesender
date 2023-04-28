@@ -21,7 +21,6 @@ class ProfileController extends Controller
         $this->middleware('auth');
         //$this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
-
     }
     public function index()
     {
@@ -56,7 +55,6 @@ class ProfileController extends Controller
         $payment = DB::table('users')->where("id", Auth::id())->update(['password' => Hash::make($request['password'])]);
 
         return Redirect::to('/email')->with('data', "Actualizacion de datos satisfactorio!");
-
     }
 
     /**

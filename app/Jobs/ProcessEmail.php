@@ -7,6 +7,7 @@
 namespace App\Jobs;
 
 use App\Models\SendEmail;
+use App\Models\CampaingCustomer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,6 +31,7 @@ class ProcessEmail implements ShouldQueue
     protected $user;
     protected $campaing;
     protected $nameEmail;
+    protected $guardar;
 
     /**
      * Create a new job instance.
@@ -37,7 +39,7 @@ class ProcessEmail implements ShouldQueue
      * @return void
      */
 
-    public function __construct($subject, $body, $email, $from, $name, $user, $campaing, $nameEmail)
+    public function __construct($subject, $body, $email, $from, $name, $user, $campaing, $nameEmail, $guardar)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -47,6 +49,7 @@ class ProcessEmail implements ShouldQueue
         $this->user = $user;
         $this->campaing = $campaing;
         $this->nameEmail = $nameEmail;
+        $this->guardar = $guardar;
     }
 
     /**
@@ -76,16 +79,6 @@ class ProcessEmail implements ShouldQueue
 
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
 
-        //$unsuscribe = SendEmail::where(["to_email_address" => $this->email, "unsuscribe"=> 1])->first();
-
-        $unsuscribe = SendEmail::where('to_email_address', $this->email)
-            ->where(function ($query) {
-                $query->orWhere('unsuscribe', 1)
-                    ->orWhere('bounced', 1);
-            })
-            ->first();
-
-        if (!$unsuscribe) {
             Mail::send("emails." . $this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
                 $message->to($info->to_email_address)
                     ->from($info->infofrom, $info->infoname)
@@ -95,16 +88,22 @@ class ProcessEmail implements ShouldQueue
 
             $message_id = $headers->get('X-SES-Message-ID')->getValue();
 
-            if ($message_id) {
-                $sentEmail = new SendEmail();
-                $sentEmail->to_email_address = $info->to_email_address;
-                //$sentEmail->subject = $info->subject;
-                $sentEmail->message = $mensxx;
-                $sentEmail->hash = $hash;
-                $sentEmail->aws_message_id = $message_id;
-                $sentEmail->campaing_id = $this->campaing;
-                $sentEmail->save();
-            }
+        if ($message_id) {
+            $mensxx = CampaingCustomer::where('id', $this->guardar)->first();
+            $mensxx->aws_message_id = $message_id;
+            $mensxx->aws = 1;
+            $mensxx->hash = $hash;
+            $mensxx->save();
+            /*
+            $sentEmail = new SendEmail();
+            $sentEmail->to_email_address = $info->to_email_address;
+            //$sentEmail->subject = $info->subject;
+            $sentEmail->message = $mensxx;
+            $sentEmail->hash = $hash;
+            $sentEmail->aws_message_id = $message_id;
+            $sentEmail->campaing_id = $this->campaing;
+            $sentEmail->save();
+            */
         }
     }
 }

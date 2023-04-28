@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SendEmail;
+use App\Models\CampaingCustomer;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Mail;
 use DB;
@@ -36,10 +38,14 @@ class AmazonController extends Controller
             $message_id = $message['mail']['messageId'];
             switch ($message['eventType']) {
                 case 'Bounce':
-                    $bounce = $message['bounce'];
-                    $email = SendEmail::where('aws_message_id', $message_id)->first();
-                    $email->bounced = true;
-                    $email->save();
+                    //$bounce = $message['bounce'];
+                    $entrega = CampaingCustomer::where('aws_message_id', $message_id)->first();
+                    $entrega->bounced = true;
+                    $entrega->save();
+
+                    $customer = Customer::where('id', $entrega->customer_id)->first();
+                    $customer->bounced = true;
+                    $customer->save();
 
                     $log =  DB::table('logs')->insert(
                         [
@@ -49,54 +55,39 @@ class AmazonController extends Controller
                         ]
                     );
 
-                    // foreach ($bounce['bouncedRecipients'] as $bouncedRecipient){
-                    //     $emailAddress = $bouncedRecipient['emailAddress'];
-                    //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Bounce']);
-                    //     if($emailRecord){
-                    //         $emailRecord->increment('repeated_attempts',1);
-                    //     }
-                    // }
                     break;
                 case 'Complaint':
-                    $complaint = $message['complaint'];
-                    $email = SendEmail::where('aws_message_id', $message_id)->first();
-                    $email->complaint = true;
-                    $email->save();
-                    // foreach($complaint['complainedRecipients'] as $complainedRecipient){
-                    //     $emailAddress = $complainedRecipient['emailAddress'];
-                    //     $emailRecord = WrongEmail::firstOrCreate(['email' => $emailAddress, 'problem_type' => 'Complaint']);
-                    //     if($emailRecord){
-                    //         $emailRecord->increment('repeated_attempts',1);
-                    //     }
-                    // }
+                    //$complaint = $message['complaint'];
+                    $entrega = CampaingCustomer::where('aws_message_id', $message_id)->first();
+                    $entrega->complaint = true;
+                    $entrega->save();
+
+                    $customer = Customer::where('id', $entrega->customer_id)->first();
+                    $customer->complaint = true;
+                    $customer->save();
+
+                    $log =  DB::table('logs')->insert(
+                        [
+                        'name' => "Complaint",
+                        'type' => "complaint",
+                        'create_at' => date("Y-m-d h:i:s"),
+                        ]
+                    );
+
                     break;
                 case 'Open':
-                    $open = $message['open'];
-                    $email = SendEmail::where('aws_message_id', $message_id)->first();
-                    $email->opened = true;
-                    $email->save();
-/*
-                    $log=  DB::table('logs')->insert(
-                        [
-                        'name' => "open",
-                        'create_at'=>date("Y-m-d h:i:s"),
-                        ]
-                    );*/
+                    //$open = $message['open'];
+                    $entrega = CampaingCustomer::where('aws_message_id', $message_id)->first();
+                    $entrega->opened = true;
+                    $entrega->save();
 
                     break;
                 case 'Delivery':
-                    $delivery = $message['delivery'];
-                    $email = SendEmail::where('aws_message_id', $message_id)->first();
-                    $email->delivered = true;
-                    $email->save();
-                    /*
-                    $log=  DB::table('logs')->insert(
-                        [
-                        'name' => "Delivery",
-                        'create_at'=>date("Y-m-d h:i:s"),
-                        ]
-                    );
-                    */
+                    //$delivery = $message['delivery'];
+                    $entrega = CampaingCustomer::where('aws_message_id', $message_id)->first();
+                    $entrega->delivered = true;
+                    $entrega->save();
+
                     break;
                 default:
                     // Do Nothing

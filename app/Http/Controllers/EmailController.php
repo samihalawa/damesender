@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\UserEmail;
 use Illuminate\Http\Request;
 use Redirect;
+
 class EmailController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -44,7 +44,7 @@ class EmailController extends Controller
             'email' => 'required|email|unique:user_emails|max:255',
         ]);
 
-        $sender          = new UserEmail;
+        $sender          = new UserEmail();
         $sender->email    = $request->email;
         $sender->save();
 
@@ -71,7 +71,7 @@ class EmailController extends Controller
     public function edit($id)
     {
         $sender = UserEmail::find($id);
-        if($sender){
+        if ($sender) {
             return view("email-sender-update", compact('sender'));
         }
 
@@ -88,15 +88,14 @@ class EmailController extends Controller
     public function update(Request $request, $id)
     {
         $sender = UserEmail::find($id);
-       
-        if($sender){
+
+        if ($sender) {
             $sender->email    = $request->email;
             $sender->status   = $request->status ? 1 : 0;
             $sender->save();
 
             return Redirect::to('/emails')->with('data', "Actualización correcta");
         }
-       
     }
 
     /**

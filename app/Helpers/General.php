@@ -36,4 +36,9 @@ class General
     {
         return DB::table('file_contacts')->where("file_id", $id)->count();
     }
+
+    public static function countFiles($id)
+    {
+        return DB::table('file_contacts')->where("file_id", $id)->count();
+    }
 }
