@@ -39,6 +39,7 @@
             <tr>
                 <th>Campaña</th>
                 <th>Send</th>
+                <th>AWS</th>
                 <th>Delibery</th>
                 <th>Open</th>
                 <th>Bounced</th>
