@@ -94,16 +94,6 @@ class ProcessEmail implements ShouldQueue
             $mensxx->aws = 1;
             $mensxx->hash = $hash;
             $mensxx->save();
-            /*
-            $sentEmail = new SendEmail();
-            $sentEmail->to_email_address = $info->to_email_address;
-            //$sentEmail->subject = $info->subject;
-            $sentEmail->message = $mensxx;
-            $sentEmail->hash = $hash;
-            $sentEmail->aws_message_id = $message_id;
-            $sentEmail->campaing_id = $this->campaing;
-            $sentEmail->save();
-            */
         }
     }
 }

@@ -24,7 +24,7 @@ class SenderEmail implements ShouldQueue
 
     public const PAGINATE = 3000;
     //public const PAGINATE = 1;
-    public const MAX_EMAILS_SENDER = 8;
+    public const MAX_EMAILS_SENDER = 5;
 
     public $timeout = 2400;
 
