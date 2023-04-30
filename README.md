@@ -3,3 +3,9 @@
 <h1> Damesender 1.0</h1>
 
 ´´´
+
+´´´
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start laravel-worker:*
+´´´

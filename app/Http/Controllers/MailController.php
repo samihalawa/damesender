@@ -37,7 +37,7 @@ class MailController extends Controller
     {
         // Persmisos para acceder a estos metodos
         $this->middleware('auth');
-        // $this->middleware('roledSMS');
+        $this->middleware('roledSMS');
         // $this->middleware(['auth'], ['only' => 'index', 'store','sendTest']);
     }
 

@@ -17,28 +17,10 @@ class RoleAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::User()->type == 'Administrador'){
+        if (Auth::User()->type == 'Administrador') {
             return $next($request);
         }
-        
+
         return redirect('/historial');
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
