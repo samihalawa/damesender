@@ -22,11 +22,11 @@ class SenderEmail implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public const PAGINATE = 2500;
+    public const PAGINATE = 3000;
     //public const PAGINATE = 1;
-    public const MAX_EMAILS_SENDER = 10;
+    public const MAX_EMAILS_SENDER = 8;
 
-    public $timeout = 1200;
+    public $timeout = 2400;
 
     protected $subject;
     protected $body;
@@ -121,7 +121,7 @@ class SenderEmail implements ShouldQueue
      */
     public function verifica($contact, $campaign, $sendDate, $body, $subject, $from, $name)
     {
-        Log::info('date: ' . $sendDate);
+        //Log::info('date: ' . $sendDate);
         $customer = Customer::select('first_name', 'email', 'id', 'bounced', 'unsuscribe', 'complaint')
             ->where('email', $contact->email)
             ->first();
@@ -129,7 +129,7 @@ class SenderEmail implements ShouldQueue
         if ($customer) {
             if (($customer->bounced) || ($customer->unsuscribe) || ($customer->complaint)) {
                 // no envia el email
-                Log::info("no envio por bounced, complaint");
+                //Log::info("no envio por bounced, complaint");
                 return 0;
             }
         } else {
