@@ -102,6 +102,7 @@ class FileController extends Controller
                     $file_contact->name = $user;
                     $file_contact->file_id = $id;
                 $file_contact->save();
+                break;
             }
         }
 
