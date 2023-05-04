@@ -22,9 +22,9 @@ class SenderEmail implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public const PAGINATE = 3000;
+    public const PAGINATE = 2000;
     //public const PAGINATE = 1;
-    public const MAX_EMAILS_SENDER = 5;
+    public const MAX_EMAILS_SENDER = 4;
 
     public $timeout = 2400;
 
@@ -93,7 +93,7 @@ class SenderEmail implements ShouldQueue
         $paginas = $total / self::PAGINATE;
         $paginas = ceil($paginas);
         for ($i = 2; $i <= $paginas; $i++) {
-            sleep(1);
+            sleep(2);
             $contactos = FileContact::select("email", "name")->where('file_id', $this->file)->paginate(self::PAGINATE, ['*'], 'page', $i);
             foreach ($contactos as $contact) {
                 if ($cont >= self::MAX_EMAILS_SENDER) {
