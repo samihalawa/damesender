@@ -26,7 +26,7 @@ class CreateSendEmailsTable extends Migration
             $table->boolean('complaint')->default(false);
             $table->boolean('bounced')->default(false);
             $table->boolean('unsuscribe')->default(false);
-            $table->bigInteger('campaing_id')->unsigned()->index();          
+            $table->bigInteger('campaing_id')->unsigned()->index();
             $table->foreign('campaing_id')->references('id')->on('campaigns');
             $table->timestamps();
         });

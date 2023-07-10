@@ -14,6 +14,7 @@ use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,8 @@ Route::resource('/campaing', CampaingController::class);
 Route::resource('/historial', HistorialPagosController::class);
 
 Route::resource('/profile', ProfileController::class);
+
+Route::resource('/setting', SettingController::class);
 
 Route::resource('/emails', EmailController::class);
 // files
