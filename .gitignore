@@ -3,6 +3,9 @@
 /public/storage
 /storage/*.key
 /vendor
+/public/files
+/resources/views/emails/
+worker*
 .env
 .env.backup
 .phpunit.result.cache
