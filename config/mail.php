@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => 'email-smtp.us-east-1.amazonaws.com',//$setting->mail_host,
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'username' => 'AKIASO2XOMEGIRNWY25C',//$setting->mail_username,
+            'password' => 'BLHryM8x4kIC5N0NjDF0Nh4WwQXtW6WAEiQg0y9wRE8z',//$setting->mail_password,
             'timeout' => null,
             'auth_mode' => null,
         ],

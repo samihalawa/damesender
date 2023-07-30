@@ -35,13 +35,14 @@ class SenderEmail implements ShouldQueue
     protected $campaign;
     protected $file;
     protected $sendDate;
+    protected $settings;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($subject, $body, $from, $name, $campaign, $file, $sendDate)
+    public function __construct($subject, $body, $from, $name, $campaign, $file, $sendDate, $settings)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -50,6 +51,7 @@ class SenderEmail implements ShouldQueue
         $this->campaign = $campaign;
         $this->file = $file;
         $this->sendDate = $sendDate;
+        $this->settings = $settings;
     }
 
 
@@ -81,7 +83,7 @@ class SenderEmail implements ShouldQueue
                 $this->sendDate = $this->sendDate->addSeconds($add);
             }
             //Log::info('cont: ' . $cont);
-            $this->verifica($contact, $this->campaign, $this->sendDate, $this->body, $this->subject, $this->from, $this->name);
+            $this->verifica($contact, $this->campaign, $this->sendDate, $this->body, $this->subject, $this->from, $this->name, $this->settings);
             $cont++;
         }
 
@@ -102,7 +104,7 @@ class SenderEmail implements ShouldQueue
                     $this->sendDate = $this->sendDate->addSeconds($add);
                 }
                 //Log::info('cont: ' . $cont);
-                $this->verifica($contact, $this->campaign, $this->sendDate, $this->body, $this->subject, $this->from, $this->name);
+                $this->verifica($contact, $this->campaign, $this->sendDate, $this->body, $this->subject, $this->from, $this->name, $this->settings);
                 $cont++;
             }
         }
@@ -119,7 +121,7 @@ class SenderEmail implements ShouldQueue
      * @param $from email de envio
      * @param $name nombre de la campana
      */
-    public function verifica($contact, $campaign, $sendDate, $body, $subject, $from, $name)
+    public function verifica($contact, $campaign, $sendDate, $body, $subject, $from, $name, $settings)
     {
         //Log::info('date: ' . $sendDate);
         $customer = Customer::select('first_name', 'email', 'id', 'bounced', 'unsuscribe', 'complaint')
@@ -155,7 +157,7 @@ class SenderEmail implements ShouldQueue
         //date_default_timezone_set('America/Caracas');
         //$sendDate = Carbon::now();
 
-        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaign->id, $nameEmail, $guardar->id)
+        ProcessEmail::dispatch($subject, $body, $email, $from, $name, $user, $campaign->id, $nameEmail, $guardar->id, $settings)
             ->delay($sendDate);
     }
 }

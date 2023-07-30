@@ -10,6 +10,7 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'mail_host',
         'mail_username',
         'mail_password',

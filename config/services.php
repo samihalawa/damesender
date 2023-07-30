@@ -25,8 +25,8 @@ return [
     ],
 
     'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'key' => 'AKIASO2XOMEGLQO3QW7T',// $setting->aws_access_key_id,
+        'secret' => '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',//$setting->aws_secret_access_key,
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
         'options' => [
             'ConfigurationSetName' => env('AWS_SES_CONFIG_SET', 'email-notifications'),

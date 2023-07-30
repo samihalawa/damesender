@@ -405,7 +405,9 @@ class MailController extends Controller
 
         $file = $request->recipients;
 
-        SenderEmail::dispatch($subject, $body, $from, $name, $campaing, $file, $sendDate);
+        $setting = DB::table('settings')->where('user_id', Auth::user()->id)->first();
+
+        SenderEmail::dispatch($subject, $body, $from, $name, $campaing, $file, $sendDate, $setting);
 
         //event(new SenderEvent($subject, $body, $from, $name, $campaing, $file_id, $sendDate));
 

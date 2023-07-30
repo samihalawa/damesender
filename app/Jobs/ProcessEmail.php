@@ -15,6 +15,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 
 class ProcessEmail implements ShouldQueue
 {
@@ -32,6 +35,7 @@ class ProcessEmail implements ShouldQueue
     protected $campaing;
     protected $nameEmail;
     protected $guardar;
+    protected $settings;
 
     /**
      * Create a new job instance.
@@ -39,7 +43,7 @@ class ProcessEmail implements ShouldQueue
      * @return void
      */
 
-    public function __construct($subject, $body, $email, $from, $name, $user, $campaing, $nameEmail, $guardar)
+    public function __construct($subject, $body, $email, $from, $name, $user, $campaing, $nameEmail, $guardar, $settings)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -50,6 +54,7 @@ class ProcessEmail implements ShouldQueue
         $this->campaing = $campaing;
         $this->nameEmail = $nameEmail;
         $this->guardar = $guardar;
+        $this->settings = $settings;
     }
 
     /**
@@ -78,6 +83,13 @@ class ProcessEmail implements ShouldQueue
         $hash = str_replace("$", "S", $hash);
 
         $unsubscribe_link = "https://damesender.com/unsuscribe/campaing/" . $this->campaing . "/" . $hash;
+
+        Config::set('mail.mailers.smtp.host', $this->settings->mail_host);
+        Config::set('mail.mailers.smtp.username', $this->settings->mail_username);
+        Config::set('mail.mailers.smtp.password', $this->settings->mail_password);
+
+        Config::set('services.ses.key', $this->settings->aws_access_key_id);
+        Config::set('services.ses.secret', $this->settings->aws_secret_access_key);
 
             Mail::send("emails." . $this->nameEmail, ['unsubscribe_link' => $unsubscribe_link], function ($message) use (&$headers, $info) {
                 $message->to($info->to_email_address)
