@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">SMTP_MAIL_HOST</label>
                             <div class="col-md-6">
-                                <input id="mail_host" type="text" class="form-control @error('mail_host') is-invalid @enderror" name="mail_host" value="{{$setting->mail_host}}" value="{{ old('mail_host') }}" required >
+                                <input id="mail_host" type="text" class="form-control @error('mail_host') is-invalid @enderror" name="mail_host" value="{{$setting->mail_host ?? ''}}" value="{{ old('mail_host') }}" required >
                                 @error('mail_host')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -54,7 +54,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">SMTP_mail_username</label>
                             <div class="col-md-6">
-                                <input id="mail_username" type="text" class="form-control @error('mail_username') is-invalid @enderror" name="mail_username" value="{{$setting->mail_username}}" value="{{ old('mail_username') }}" >
+                                <input id="mail_username" type="text" class="form-control @error('mail_username') is-invalid @enderror" name="mail_username" value="{{$setting->mail_username ?? ''}}" value="{{ old('mail_username') }}" >
                                 @error('mail_username')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -66,7 +66,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">SMTP_mail_password</label>
                             <div class="col-md-6">
-                                <input id="mail_password" type="text" class="form-control @error('mail_password') is-invalid @enderror" name="mail_password" value="{{$setting->mail_password}}" value="{{ old('mail_password') }}" >
+                                <input id="mail_password" type="text" class="form-control @error('mail_password') is-invalid @enderror" name="mail_password" value="{{$setting->mail_password ?? ''}}" value="{{ old('mail_password') }}" >
                                 @error('mail_password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -93,7 +93,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">AWS_ACCESS_KEY_ID</label>
                             <div class="col-md-6">
-                                <input id="aws_access_key_id" type="text" class="form-control @error('aws_access_key_id') is-invalid @enderror" name="aws_access_key_id" value="{{$setting->aws_access_key_id}}" value="{{ old('aws_access_key_id') }}" required >
+                                <input id="aws_access_key_id" type="text" class="form-control @error('aws_access_key_id') is-invalid @enderror" name="aws_access_key_id" value="{{$setting->aws_access_key_id??''}}" value="{{ old('aws_access_key_id') }}" required >
                                 @error('aws_access_key_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -106,7 +106,7 @@
                          <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">AWS_SECRET_ACCESS_KEY</label>
                             <div class="col-md-6">
-                                <input id="aws_secret_access_key" type="text" class="form-control @error('aws_secret_access_key') is-invalid @enderror" name="aws_secret_access_key" value="{{$setting->aws_secret_access_key}}" value="{{ old('aws_secret_access_key') }}" required autocomplete="aws_secret_access_key" autofocus>
+                                <input id="aws_secret_access_key" type="text" class="form-control @error('aws_secret_access_key') is-invalid @enderror" name="aws_secret_access_key" value="{{$setting->aws_secret_access_key??''}}" value="{{ old('aws_secret_access_key') }}" required autocomplete="aws_secret_access_key" autofocus>
                                 @error('aws_secret_access_key')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
